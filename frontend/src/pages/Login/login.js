@@ -8,7 +8,6 @@ import loginImg from '../../assets/login.png';
 import logoImg from '../../assets/logo.png';
 
 export default function Login(){
-
   function handleLogin(e){
     e.preventDefault();
   }
