@@ -1,14 +1,112 @@
 .login {
-    height: 100vh;
-    margin: 0 auto;
 
+    height: 100vh;
+    margin: 0 auto; 
+    margin-top: 0px;
+    margin-right: 400px;
+    margin-left: 400px;
     display: flex;
     align-items: center;
-    justify-content: center;
+
+}
+
+.label{
+    width:140px;
+    background-color:#faf6f6;
+    border: 1px solid rgb(7, 7, 7);
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 300px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.button_1 {
+    padding: 6px;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 300px;
+    text-align: center;
+    border: 1px solid rgb(0,128,0);
+    background-color: #008000;
+    font-weight:bold;
+    font-size: 20px; 
+    color: #000000; 
+}
+
+.button_2 {
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    float: center;
+    width: 180px;
+    text-align: center center;
+    border: 1px solid rgb(255, 255, 0);
+    background-color: #FFFF00;
+    font-weight:bold;
+    margin-right: 50px;
+    margin-left: 50px;
+    font-size: 14px; 
+    color: #000000; 
+    
+}
+
+.button_3 {
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    float: center;
+    width: 180px;
+    text-align: center center;
+    font-size: 14px;
+    font-weight:bold;
+    margin-right: 50px;
+    margin-left: 50px;
+    
+}
+
+.text {
+
+    color:#000000;
+    height: 20px;
+    width: 160px;
+    position: relative;
+    top: 20px;
+    left: 45px;
+    font-weight:bold;
+    font-size:15px;
+}
+
+.text_2 {
+    color:#000000;
+    height: 60px;
+    width: 300px;
+    position: relative;
+    top: 0px;
+    left: 15px;
+    font-weight:bold;
+    font-size:100px;
+
+}
+
+.text_3{
+    color: #000000;
+    height: 20;
+    width: 300px;
+    position: relative;
+    top: 0px;
+    left: 50px;
+    font-weight:bold;
+    font-size:15px;
+    font-family: 'Times New Roman', Times, serif;
+    
 }
 
 .login img {
     width: 100vh;
+
 }
 
 .login section img {
@@ -22,7 +120,7 @@
 }
 
 .login section.form form {
-    margin-top: 100px;
+    margin-top: 20px;
 }
 
 .login section.form form h1 {

@@ -11,6 +11,7 @@ export default function Login(){
 
   function handleLogin(e){
     e.preventDefault();
+
   }
 
     return (
@@ -19,12 +20,14 @@ export default function Login(){
           <section className="form">
             <img src={logoImg} alt="Logo quadra"/>
             <form onSubmit={handleLogin}>
-              <h1>Faça seu login</h1>
-              <input placeholder="Seu ID"/>
-              <Button variant="secondary" className="button" type="submit">OK</Button>        
+              <h1 className="text_3">Faça seu login</h1>
+              <p><input class="label" placeholder="Email"/>
+              <input class="label" placeholder="Senha"/></p>
+              <Button variant="secondary" className="button_1" size="lg" type="submit">Entrar</Button>
+              <Button variant="link" className="button_3">Esqueceu a senha?</Button>    
+              <Button align-item="center" variant="secondary" className="button_2" size="sm" type="submit">Criar Nova Conta</Button>
             </form>
           </section>
-          <img src={loginImg} alt="Aluguel de Quadras" />
         </div>
       </Container>
     );
