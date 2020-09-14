@@ -44,3 +44,9 @@ input[type=number]::-webkit-inner-spin-button {
 .button:hover {
     filter: brightness(90%);
 }
+
+.title {
+    text-align: center;
+    color: gray;
+    padding: 1em;
+}
