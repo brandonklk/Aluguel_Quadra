@@ -49,6 +49,12 @@ input[type=number]::-webkit-inner-spin-button {
     filter: brightness(90%);
 }
 
+.title {
+    text-align: center;
+    color: gray;
+    padding: 1em;
+}
+
 .loading {
     color:black;
     background: white;
