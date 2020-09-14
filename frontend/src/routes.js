@@ -10,7 +10,7 @@ export default function Routes(){
             <Switch>
                 <Route path="/" exact component={Login}/>
                 <Route path="/UserRegistration" component={UserRegistration} />
-RouterGeneric
+        		RouterGeneric
             </Switch>
         </BrowserRouter>
     )

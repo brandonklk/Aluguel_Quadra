@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from 'react'
 import { Container, Row, Col , InputGroup, FormControl, Button } from 'react-bootstrap'
 // import Loader from '../../component/Loader'
+
+import Actions from '../../actions/UserRegistration/UserRegistration'
 import './UserRegistration.css'
 
 class UserRegistration extends Component {
@@ -57,13 +59,19 @@ class UserRegistration extends Component {
     }
 
     submit = () => {
-        console.log('Submit')
         this.setState({loading: true})
-
-        setTimeout(() => {
+        Actions.createUser({
+            name: this.state.form.name,
+            email: this.state.form.email,
+            passwordHash: this.state.form.password,
+            phone: this.state.form.fone
+        })
+        .then((r) => {
             this.setState({loading: false})
             this.clearState()
-        },1000)
+        }).catch((e) => {
+            this.setState({loading: false})
+        })
     }
 
     back = () => {
