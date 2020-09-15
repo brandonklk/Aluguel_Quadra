@@ -89,6 +89,11 @@ class forgotPassword extends Component {
     })
   }
 
+  back = () => {
+    // this.clearState()
+    this.props.history.goBack()
+  }
+
   render () {
     const tokenIsValid = this.state.tokenIsValid
     
@@ -106,6 +111,10 @@ class forgotPassword extends Component {
         </InputGroup>
         <Button variant="dark" type="button" onClick={this.submitToken}>
           Validar Token
+        </Button>
+        
+        <Button variant="link" type="button" className="mt-3 mr-3 ml-3 float-right" onClick={this.back}>
+          Voltar
         </Button>
       </Col>
     </Row>
@@ -135,6 +144,11 @@ class forgotPassword extends Component {
 
         <Button variant="dark" type="button" onClick={this.submitNewPassword}>
           Trocar senha
+        </Button>
+
+
+        <Button variant="link" type="button" className="mt-3 mr-3 ml-3 float-right" onClick={() => {this.setState({tokenIsValid: false})}}>
+          Cancelar
         </Button>
       </Row>
     }

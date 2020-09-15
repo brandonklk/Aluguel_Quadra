@@ -20,7 +20,7 @@ const ActionsUserRegistration = (router) => {
 
     function createUser (User) {
         return new Promise((resolve, reject) => {
-            Api.post(`/${router}`, User)
+            Api.post(`/${'create_users'}`, User)
                 .then(function(r){
                     resolve(r)
                 })

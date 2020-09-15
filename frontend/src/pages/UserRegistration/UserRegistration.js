@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { Container, Row, Col , InputGroup, FormControl, Button } from 'react-bootstrap'
-// import Loader from '../../component/Loader'
+import Loader from '../../component/Loader'
 
 import Actions from '../../actions/UserRegistration/UserRegistration'
 import './UserRegistration.css'
@@ -63,12 +63,20 @@ class UserRegistration extends Component {
         Actions.createUser({
             name: this.state.form.name,
             email: this.state.form.email,
-            passwordHash: this.state.form.password,
+            password: this.state.form.password,
             phone: this.state.form.fone
         })
         .then((r) => {
+            const email = this.state.form.email
             this.setState({loading: false})
             this.clearState()
+
+            this.props.history.push({
+                pathname: '/',
+                param: {
+                    email: email
+                }
+            })
         }).catch((e) => {
             this.setState({loading: false})
         })
@@ -76,12 +84,13 @@ class UserRegistration extends Component {
 
     back = () => {
         this.clearState()
+        this.props.history.goBack()
     }
 
     render () {
         return (
             <Fragment>
-                {/* <Loader loading={this.state.loading}/> */}
+                <Loader loading={this.state.loading}/>
                 <Container className="UserRegistration">
                     <h1 className="title">Cadastro de Usuário</h1>
                     <Row>
@@ -136,15 +145,16 @@ class UserRegistration extends Component {
                                 />
                             </InputGroup>
                         </Col>    
+                        
+                        <Button variant="dark" type="button" className="mt-3 mr-3 ml-3 float-right" onClick={this.submit}>
+                            Criar conta
+                        </Button>
+
+
+                        <Button variant="link" type="button" className="mt-3 mr-3 ml-3 float-right" onClick={this.back}>
+                            Cancelar
+                        </Button>
                     </Row>
-
-                    <Button variant="link" type="button" className="mt-3 float-right" onClick={this.back}>
-                        Cancelar
-                    </Button>
-
-                    <Button variant="dark" type="button" className="mt-3 mr-3 float-right" onClick={this.submit}>
-                        Criar conta
-                    </Button>
                 </Container>
             </Fragment>
         );
