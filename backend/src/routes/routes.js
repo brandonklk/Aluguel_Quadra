@@ -21,18 +21,25 @@ router.post('/request_password_user',  celebrate({
     })
 }), UserController.requestResetPassword);
 
-router.put('/reset_password_user',  celebrate({
-    [Segments.BODY]: Joi.object().keys({
-        email: Joi.string().required().email().trim(),
-        password: Joi.string().required(),
-    })
-}), UserController.resetPassword);
-
 router.post('/authenticate',  celebrate({
     [Segments.BODY]: Joi.object().keys({
         email: Joi.string().required().email().trim(),
         password: Joi.string().required().trim(),
     })
 }), UserController.authenticate);
+
+router.post('/request_forgot_password',  celebrate({
+    [Segments.BODY]: Joi.object().keys({
+        email: Joi.string().required().email().trim()
+    })
+}), UserController.requestForgotPassword);
+
+router.put('/reset_password_user',  celebrate({
+    [Segments.BODY]: Joi.object().keys({
+        email: Joi.string().required().email().trim(),
+        token: Joi.string().required().token().trim(),
+        password: Joi.string().required()
+    })
+}), UserController.resetPassword);
 
 module.exports = router;
