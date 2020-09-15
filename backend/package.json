@@ -11,18 +11,25 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "celebrate": "^12.2.0",
     "cors": "^2.8.5",
     "cross-env": "^7.0.2",
-    "crypto": "^1.0.1",
-    "dotenv-safe": "^8.2.0",
     "express": "^4.17.1",
+    "fs": "0.0.1-security",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.21.5",
+    "nodemailer": "^6.4.11",
+    "nodemailer-express-handlebars": "^4.0.0",
+    "path": "^0.12.7",
+    "pino": "^6.6.0",
+    "pino-http": "^5.2.0",
     "sqlite3": "^5.0.0"
   },
   "devDependencies": {
+    "jest": "^26.4.2",
     "nodemon": "^2.0.4",
+    "pino-pretty": "^4.2.1",
     "supertest": "^4.0.2"
   }
 }
