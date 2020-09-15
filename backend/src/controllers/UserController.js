@@ -3,6 +3,7 @@ const connection = require('../database/connection');
 const bcrypt = require('bcryptjs');
 const tokenResetPassword = require('../utils/tokenResetPassword');
 const logger = require('../logger/logger');
+const smtp = require('../modules/smtp.js');
 
 module.exports = {
 
@@ -45,37 +46,6 @@ module.exports = {
 
     },
 
-    async resetPassword(req, res){
-      const { email, password, token } = req.body;
-      
-      const user = await connection('users').select('email', 'passwordHash', 'token').where('email', '=', email);
-
-      if(!user) {
-        return res.status(400).send({ error: 'User not found' })
-      }
-
-      for(let u in user) {
-        if(!user[u].token) {
-          return res.status(400).send({ error: 'Token not found' })
-        }
-  
-        if(token === user[u].token){
-          const newPasswordWithHash = await encryptedPwd(password);
-
-          const pwdUser = await connection('users').where('email', '=', email).update({ passwordHash: newPasswordWithHash });
-
-          logger.info("Password user changed success");
-          return res.json({ success: 'Password user changed success' });
-
-        } else {
-          logger.error("Token incorrect");
-          return res.status(400).send({ error: 'Token incorrect' })
-        }
-
-      }
-
-    },
-
     async authenticate(req, res){
         const { email, password } = req.body;
 
@@ -107,6 +77,22 @@ module.exports = {
       let userUpdated;
       try{
         userUpdated = await connection('users').update({'token': tokenResetPwd}).where('email', '=', email);
+        
+        var email2User = {
+          from: smtp.user,
+          to: email,
+          subject: "Recuperação de Senha",
+          text: "Email: " + email + " - Token: " + tokenResetPwd
+          // template: 'mailTemplate'
+          };
+
+        smtp.sendMail(email2User, function(error){
+            if(error) {
+              logger.error("Error sending email " + error);
+            }else{
+              logger.info("Email successfully sent");
+            }
+          });
       }catch(e){
         logger.error("Error when generating token for user" + e);
         return res.status(400).send({ error: 'Error creating token' })
@@ -118,5 +104,36 @@ module.exports = {
 
       logger.info("Password user changed success");
       return res.status(200).send({ success: 'Token successfully generated' });
-  }
+  },
+
+  async resetPassword(req, res){
+    const { email, password, token } = req.body;
+    
+    const user = await connection('users').select('email', 'passwordHash', 'token').where('email', '=', email);
+
+    if(!user) {
+      return res.status(400).send({ error: 'User not found' })
+    }
+
+    for(let u in user) {
+      if(!user[u].token) {
+        return res.status(400).send({ error: 'Token not found' })
+      }
+
+      if(token === user[u].token){
+        const newPasswordWithHash = await encryptedPwd(password);
+
+        const pwdUser = await connection('users').where('email', '=', email).update({ passwordHash: newPasswordWithHash });
+
+        logger.info("Password user changed success");
+        return res.json({ success: 'Password user changed success' });
+
+      } else {
+        logger.error("Token incorrect");
+        return res.status(400).send({ error: 'Token incorrect' })
+      }
+
+    }
+
+  },
 };
