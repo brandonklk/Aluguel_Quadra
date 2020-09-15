@@ -15,6 +15,7 @@ class Login extends Component {
   
   getInitialize = (props) => {
     const state = {
+      loading: false,
       email: "",
       password: "",
       error: ""
@@ -32,6 +33,7 @@ class Login extends Component {
 
   handleLogin = async e => {
     e.preventDefault();
+    this.setState({loading: true})
     const { email, password } = this.state;
     if (!email || !password) {
       this.setState({ error: "Preencha e-mail e senha para continuar!" });
@@ -39,12 +41,15 @@ class Login extends Component {
       try {
         const response = await api.post("/authenticate", { email, password });
         login(response.data.token);
-        this.props.history.push("/app");
+        
+        this.setState({loading: false})
+        this.props.history.push("/Dashboard");
       } catch (err) {
         this.setState({
           error:
             "Ocorreu um problema com o login, verifique as informações de e-mail e senha."
         });
+        this.setState({loading: false})
       }
     }
   };

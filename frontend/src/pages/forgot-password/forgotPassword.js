@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react';
 import { Container, Row, Col, InputGroup, FormControl, Button, Alert } from 'react-bootstrap';
-import Table from '../../component/Table'
 import Loader from '../../component/Loader'
 import './forgotPassword.css';
 
@@ -10,9 +9,9 @@ class forgotPassword extends Component {
     loading: false,
     tokenIsValid: false,
     form: {
-      token: null,
-      password: null,
-      passwordConfirm: null
+      token: '',
+      password: '',
+      passwordConfirm: ''
     }
   }
 
