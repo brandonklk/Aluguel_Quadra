@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Container, Row, Col, InputGroup, FormControl, Button } from 'react-bootstrap';
+import { Container, Row, Col, InputGroup, FormControl, Button, Alert } from 'react-bootstrap';
 import Table from '../../component/Table'
 import Loader from '../../component/Loader'
 import './forgotPassword.css';
@@ -89,11 +89,22 @@ class forgotPassword extends Component {
     })
   }
 
+  back = () => {
+    // this.clearState()
+    this.props.history.goBack()
+  }
+
   render () {
     const tokenIsValid = this.state.tokenIsValid
     
     let template = 
     <Row>
+      <Col md="12">
+        <Alert variant="dark">
+          Verificar sua caixa de email cadastrado para validar o token!
+        </Alert>
+      </Col>
+      
       <Col>
         <InputGroup className="mb-3">
           <FormControl
@@ -106,6 +117,10 @@ class forgotPassword extends Component {
         </InputGroup>
         <Button variant="dark" type="button" onClick={this.submitToken}>
           Validar Token
+        </Button>
+        
+        <Button variant="link" type="button" className="mt-3 mr-3 ml-3 float-right" onClick={this.back}>
+          Voltar
         </Button>
       </Col>
     </Row>
@@ -135,6 +150,11 @@ class forgotPassword extends Component {
 
         <Button variant="dark" type="button" onClick={this.submitNewPassword}>
           Trocar senha
+        </Button>
+
+
+        <Button variant="link" type="button" className="mt-3 mr-3 ml-3 float-right" onClick={() => {this.setState({tokenIsValid: false})}}>
+          Cancelar
         </Button>
       </Row>
     }
