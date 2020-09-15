@@ -27,14 +27,8 @@ class Dashboard extends Component {
     getInitialize = () => {
         return {
             loading: false,
-            head: [,'Nome', 'Email', 'Número'],
-            body: [],
-            form: {
-                name: '',
-                password: '',
-                email: '',
-                fone: ''
-            }
+            head: ['Nome', 'Email', 'Número'],
+            body: []
         }
     }
 
@@ -44,9 +38,6 @@ class Dashboard extends Component {
     }
     
     render () {
-
-        console.log(this.state.body )
-        let template = ''
         return (
             <Fragment>
                 <Loader loading={this.state.loading}/>
@@ -54,7 +45,6 @@ class Dashboard extends Component {
                 <h1 className="title">Dashboard</h1>
                     <Row>
                         <Table head={this.state.head} body={this.state.body}/>
-                        {/* {template} */}
                     </Row>
                 </Container>
             </Fragment>

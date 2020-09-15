@@ -95,7 +95,7 @@ class UserRegistration extends Component {
                     <h1 className="title">Cadastro de Usuário</h1>
                     <Row>
                         <Col md="">
-                            <InputGroup className="">
+                            <InputGroup className="mt-3">
                                 <FormControl
                                     placeholder="Nome"
                                     aria-label="Nome"
@@ -105,8 +105,8 @@ class UserRegistration extends Component {
                             />
                             </InputGroup> 
                         </Col>
-                        <Col>
-                            <InputGroup className="">
+                        <Col md>
+                            <InputGroup className="mt-3">
                                 <FormControl
                                     placeholder="Senha"
                                     aria-label="Senha"
@@ -120,7 +120,7 @@ class UserRegistration extends Component {
                     </Row>    
 
                     <Row >    
-                        <Col>
+                        <Col md>
                             <InputGroup className="mt-3">
                             <InputGroup.Prepend>
                                 <InputGroup.Text id="email">@</InputGroup.Text>
@@ -134,7 +134,7 @@ class UserRegistration extends Component {
                                 />
                             </InputGroup>
                         </Col>
-                        <Col>
+                        <Col md>
                             <InputGroup className="mt-3">
                                 <FormControl
                                 placeholder="(__) 9 9999-9999"

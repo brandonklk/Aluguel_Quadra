@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+// import {tHead} from './styles'
 
 const  TableHead =  props => {
     const isDelete = (index) => {
@@ -11,10 +12,13 @@ const  TableHead =  props => {
         }
     }
     isDelete()
-
+    const tHead = {
+        padding:'1em'
+    }
+    
     const rows = props.head.map((item, index) => {
         return (
-            <th key={index.toString()}>
+            <th style={tHead} key={index.toString()}>
                 {item}
             </th>
         );
@@ -46,6 +50,9 @@ const TableBody = props => {
         return template;
     }
 
+    const tbody = {
+        padding:'1em'
+    }
     
     const rows = props.body.map((item, index) => {
         return (
@@ -53,7 +60,7 @@ const TableBody = props => {
                 {
                     Object.values(item).map((p, i) => {
                         return (
-                            <td key={index+i}>{p}</td>
+                            <td  style={tbody} key={index+i}>{p}</td>
                         );
                     })
                 }
@@ -76,14 +83,14 @@ class Table extends Component {
 
     render () {
         const { head, body, FuncDelete, FuncEdit } = this.props;
-
+        const styleTable = {
+            width: '100%',
+        }
         return (
-            <div>
-                <table>
-                   <TableHead head={ head } FuncDelete={FuncDelete} FuncEdit={FuncEdit}/>
-                   <TableBody body={ body } FuncDelete={FuncDelete} FuncEdit={FuncEdit}/>
-                </table>
-            </div>
+            <table style={styleTable}>
+                <TableHead head={ head } FuncDelete={FuncDelete} FuncEdit={FuncEdit}/>
+                <TableBody body={ body } FuncDelete={FuncDelete} FuncEdit={FuncEdit}/>
+            </table>
         );
     }
 }
