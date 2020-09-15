@@ -35,4 +35,10 @@ router.post('/authenticate',  celebrate({
     })
 }), UserController.authenticate);
 
+router.post('/request_forgot_password',  celebrate({
+    [Segments.BODY]: Joi.object().keys({
+        email: Joi.string().required().email().trim()
+    })
+}), UserController.requestForgotPassword);
+
 module.exports = router;

@@ -36,7 +36,7 @@ module.exports = {
 
         const user = await connection('users').select('email', 'passwordHash').where('email', '=', email);
             
-        if(!user) {
+        if(!user || user.length == 0) {
             return res.status(400).send({ error: 'User not found' })
         }
 
@@ -98,5 +98,25 @@ module.exports = {
         logger.info("User authenticate success")
         return res.json({ user });
         
-    }
+    },
+
+    async requestForgotPassword(req, res){
+      const { email } = req.body;
+
+      const tokenResetPwd = tokenResetPassword();
+      let userUpdated;
+      try{
+        userUpdated = await connection('users').update({'token': tokenResetPwd}).where('email', '=', email);
+      }catch(e){
+        logger.error("Error when generating token for user" + e);
+        return res.status(400).send({ error: 'Error creating token' })
+      }
+      
+      if(userUpdated == 0){
+        return res.status(400).send({ error: 'User not found' });
+      }
+
+      logger.info("Password user changed success");
+      return res.status(200).send({ success: 'Token successfully generated' });
+  }
 };
