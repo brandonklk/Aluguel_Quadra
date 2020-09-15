@@ -44,7 +44,7 @@ class Login extends Component {
                 <p><input class="label" placeholder="Email" onChange={e => this.setState({ email: e.target.value })}/>
                 <input class="label" placeholder="Senha" onChange={e => this.setState({ password: e.target.value })}/></p>
                 <Button variant="secondary" className="button_1" size="lg" type="submit">Entrar</Button>
-                <Button variant="link" className="button_3" href={"forgotPassword.js"} >Esqueceu a senha?</Button>    
+                <Button variant="link" className="button_3" href={"forgot-password"} >Esqueceu a senha?</Button>    
                 <Button align-item="center" variant="secondary" className="button_2" size="sm" type="submit">Criar Nova Conta</Button>
               </form>
             </section>
