@@ -51,7 +51,7 @@ module.exports = {
 
         const user = await connection('users').select('email', 'passwordHash').where('email', '=', email);
 
-        if(!user) {
+        if(user.length === 0) {
           return res.status(400).send({ error: 'User not found' });
         }
 

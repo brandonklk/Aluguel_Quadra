@@ -1,8 +1,9 @@
 import React, { Component, Fragment } from 'react';
-import { Container, Row, Col, InputGroup, FormControl, Button } from 'react-bootstrap';
-import Table from '../../component/Table'
+import { Container, Row, Col, InputGroup, FormControl, Button, Alert } from 'react-bootstrap';
 import Loader from '../../component/Loader'
 import './forgotPassword.css';
+
+import Actions from "../../actions/Authenticate/Authenticate"
 
 class forgotPassword extends Component {
   stateInitial = {
@@ -10,9 +11,10 @@ class forgotPassword extends Component {
     loading: false,
     tokenIsValid: false,
     form: {
-      token: null,
-      password: null,
-      passwordConfirm: null
+      email: '',
+      token: '',
+      password: '',
+      passwordConfirm: ''
     }
   }
 
@@ -22,71 +24,67 @@ class forgotPassword extends Component {
     this.setState(this.stateInitial)
   }
   
+  setEmail = (event) => {
+    const {value} = event.target
+    
+    this.setState({ form: Object.assign(this.state.form ,{email: value})})
+  }
+
   setToken = (event) => {
     const {value} = event.target
-    this.setState({form:{token: value}})
+    this.setState({form: Object.assign(this.state.form ,{token: value})})
+
   }
 
   setNewPassword = (event) => {
     const {value} = event.target
-    this.setState({form:{password: value}})
+    // this.setState({form:{password: value}})
+    this.setState({form: Object.assign(this.state.form ,{password: value})})
+
   }
 
   setNewPasswordConfirm = (event) => {
     const {value} = event.target
-    this.setState({form:{passwordConfirm: value}})
+    // this.setState({form:{passwordConfirm: value}})
+    this.setState({form: Object.assign(this.state.form ,{passwordConfirm: value})})
+
   }
 
   submitToken = (event) => {
     this.setState({loading: true})
     
-    this.validTokenRequest()
-      .then(() => {
-        this.setState({
-          loading: false,
-          tokenIsValid: true
-        })
+    Actions.requestForgotPassword({email: this.state.form.email})
+    .then((r) => {
+      this.setState({
+        loading: false,
+        tokenIsValid: true
       })
-      .catch(() => {
-        this.setState({loading: false})
-      })
+    })
+    .catch((error) => {
+      this.setState({loading: false})
+    })
   }
 
   submitNewPassword = () => {
     this.setState({loading: true})
-
-    this.validPasswordRequest()
-      .then(() => {
-        this.setState({loading: false})
-     
-      })
-      .catch(() => {
-        this.setState({loading: false})
-      })
-  }
-
-  /**
-   * Execulta requisição para validar o Token 
-   */
-  validTokenRequest = () => {
-    // TODO: execultar requisição para o back end de validação de token
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve(true)
-      },1000)
+    Actions.resetPasswordUser({
+      email: this.state.form.email,
+      token : this.state.form.token,
+      password : this.state.form.passwordConfirm,
     })
-  }
+      .then((r) => {
+        this.setState({loading: false})
+        this.props.history.push({
+          pathname: '/',
+          param: {
+              email: this.state.form.email
+          }
+        })
+      })
+      .catch((error) => {
+        this.setState({loading: false})
 
-  /**
-   * Execulta requisição para validar nova senha 
-   */
-  validPasswordRequest = () => {
-    // TODO: execultar requisição para o back end de nova senha 
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve(true)
-      },1000)
-    })
+      })
   }
 
   back = () => {
@@ -100,20 +98,21 @@ class forgotPassword extends Component {
     let template = 
     <Row>
       <Col>
+        <label>Email para envio o token!</label>
         <InputGroup className="mb-3">
           <FormControl
-            placeholder="Token"
-            aria-label="Token"
+            placeholder="Email"
+            aria-label="Email"
             aria-describedby="basic-addon1"
-            value={this.state.form.token}
-            onChange={this.setToken}
+            value={this.state.form.email}
+            onChange={this.setEmail}
           />
         </InputGroup>
         <Button variant="dark" type="button" onClick={this.submitToken}>
-          Validar Token
+          Enviar
         </Button>
         
-        <Button variant="link" type="button" className="mt-3 mr-3 ml-3 float-right" onClick={this.back}>
+        <Button variant="link" type="button" className="" onClick={this.back}>
           Voltar
         </Button>
       </Col>
@@ -122,6 +121,16 @@ class forgotPassword extends Component {
     if (tokenIsValid) {
       template = 
       <Row>
+        <InputGroup className="mb-3">
+          <FormControl
+            placeholder="Token"
+            aria-label="Toke"
+            aria-describedby="basic-token"
+            value={this.state.form.token}
+            onChange={this.setToken}
+          />
+        </InputGroup>
+
         <InputGroup className="mb-3">
           <FormControl
                     placeholder="Nova senha"
