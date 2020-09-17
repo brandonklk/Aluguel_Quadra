@@ -15,11 +15,11 @@ router.post('/create_users',  celebrate({
     })
 }), UserController.create);
 
-router.post('/request_password_user',  celebrate({
-    [Segments.BODY]: Joi.object().keys({
-        email: Joi.string().required().email().trim(),
-    })
-}), UserController.requestResetPassword);
+// router.post('/request_password_user',  celebrate({
+//     [Segments.BODY]: Joi.object().keys({
+//         email: Joi.string().required().email().trim(),
+//     })
+// }), UserController.requestResetPassword);
 
 router.post('/authenticate',  celebrate({
     [Segments.BODY]: Joi.object().keys({
