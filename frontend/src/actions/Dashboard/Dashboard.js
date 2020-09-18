@@ -45,14 +45,6 @@ const ActionsDashboard = (router) => {
 
     }
     
-    function returnThen (r) {
-        console.log('r', r)
-    }
-    
-    function returnCatch (reject, error) {
-        reject(error)
-    }
-
     return {getAll, getById, create, edit, remove}
 }
 

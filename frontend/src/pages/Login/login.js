@@ -4,7 +4,7 @@ import Loader from '../../component/Loader'
 import logoImg from '../../assets/logo.png';
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
-import { login } from "../../services/auth";
+// import { login } from "../../services/auth";
 
 import Actions from "../../actions/Authenticate/Authenticate"
 

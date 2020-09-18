@@ -38,15 +38,7 @@ const ActionsUserRegistration = (router) => {
 
     }
     
-    function returnThen (r) {
-        console.log('r', r)
-    }
-    
-    function returnCatch (reject, error) {
-        reject(error)
-    }
-
-    return {getUsers, getUserById, createUser, editUser, deleteUser,}
+    return {getUsers, getUserById, createUser, editUser, deleteUser}
 }
 
 export default ActionsUserRegistration('users')

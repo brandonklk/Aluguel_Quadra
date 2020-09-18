@@ -1,10 +1,9 @@
 import React, { Component, Fragment } from 'react'
-import { Container, Row, Col } from 'react-bootstrap'
+import { Container, Row } from 'react-bootstrap'
 
 import Loader from '../../component/Loader'
 import Table from '../../component/Table'
 
-import Actions from '../../actions/Dashboard/Dashboard'
 import ActionsUserRegistration from '../../actions/UserRegistration/UserRegistration'
 
 import './Dashboard.css'

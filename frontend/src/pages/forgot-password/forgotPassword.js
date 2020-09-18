@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Container, Row, Col, InputGroup, FormControl, Button, Alert } from 'react-bootstrap';
+import { Container, Row, Col, InputGroup, FormControl, Button } from 'react-bootstrap';
 import Loader from '../../component/Loader'
 import './forgotPassword.css';
 
@@ -38,14 +38,12 @@ class forgotPassword extends Component {
 
   setNewPassword = (event) => {
     const {value} = event.target
-    // this.setState({form:{password: value}})
     this.setState({form: Object.assign(this.state.form ,{password: value})})
 
   }
 
   setNewPasswordConfirm = (event) => {
     const {value} = event.target
-    // this.setState({form:{passwordConfirm: value}})
     this.setState({form: Object.assign(this.state.form ,{passwordConfirm: value})})
 
   }
@@ -136,6 +134,7 @@ class forgotPassword extends Component {
                     placeholder="Nova senha"
                     aria-label="Nova senha"
                     aria-describedby="basic-addon1"
+                    type="password"
                     value={this.state.form.password}
                     onChange={this.setNewPassword}
                   />
@@ -146,6 +145,7 @@ class forgotPassword extends Component {
             placeholder="Confirmar nova senha"
             aria-label="Confirmar nova senha"
             aria-describedby="basic-addon1"
+            type="password" 
             value={this.state.form.passwordConfirm}
             onChange={this.setNewPasswordConfirm}
           />
