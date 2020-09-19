@@ -3,6 +3,7 @@ const { celebrate, Segments, Joi } = require('celebrate');
 
 const UserController = require('../controllers/UserController');
 const TennisCourtsController = require('../controllers/TennisCourtsController');
+const SchedulesController = require('../controllers/SchedulesController');
 
 const router = express.Router();
 
@@ -82,5 +83,16 @@ router.get('/delete_tennis_courts/name/:name', celebrate({
         name: Joi.string().required()
     })
 }), TennisCourtsController.deletePerName);
+
+router.post('/create_schedules', celebrate({
+    [Segments.BODY]: Joi.object().keys({
+        date: Joi.string().required().trim(),
+        time: Joi.string().required().trim(),
+        user_id: Joi.number().required(),
+        tennis_court_id: Joi.number().required()
+    })
+}), SchedulesController.create);
+
+router.get('/schedules', SchedulesController.getAll);
 
 module.exports = router;
