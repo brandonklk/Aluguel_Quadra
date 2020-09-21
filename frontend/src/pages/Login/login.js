@@ -4,7 +4,7 @@ import Loader from '../../component/Loader'
 import logoImg from '../../assets/logo.png';
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
-// import { login } from "../../services/auth";
+import { login } from "../../services/auth";
 
 import Actions from "../../actions/Authenticate/Authenticate"
 
@@ -43,7 +43,14 @@ class Login extends Component {
       Actions.authenticate({ email, password })
         .then((r) => {
           this.setState({loading: false})
-          this.props.history.push("/Dashboard");
+          login(r.user[0].id)
+          
+          this.props.history.push({
+            pathname: '/Dashboard',
+            param: {
+              user: r.user
+            }
+          });
         })
         .catch((error) => {
           this.setState({loading: false,

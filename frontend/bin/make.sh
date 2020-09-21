@@ -83,7 +83,7 @@ makePages ()
 replaceOfRouter () {
     #Fazer o replace das novas rotas do front end
     cd frontend/src
-    sed -i "s/RouterGeneric/\\t\\t\\t\\t<Route path=\"\/$1\" component={$1} \/>\\n\\t\\t\\t\\tRouterGeneric/gi" routes.js  
+    sed -i "s/RouterGeneric/\\t\\t\\t\\t<PrivateRouter path=\"\/$1\" component={$1} \/>\\n\\t\\t\\t\\tRouterGeneric/gi" routes.js  
     sed -i "s/\/\/ImportRouter/import $1 from '.\/pages\/$1\/$1'\\n\\/\\/ImportRouter/gi" routes.js  
     echo "New routes add";
 }
