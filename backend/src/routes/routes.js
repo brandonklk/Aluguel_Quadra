@@ -8,6 +8,7 @@ const SchedulesController = require('../controllers/SchedulesController');
 const router = express.Router();
 
 router.get('/users', UserController.getAllUsers);
+router.get('/users/:id', UserController.getUserById);
 router.post('/create_users', celebrate({
     [Segments.BODY]: Joi.object().keys({
         name: Joi.string().required().trim(),
