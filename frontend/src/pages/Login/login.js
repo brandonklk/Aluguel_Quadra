@@ -4,7 +4,7 @@ import Loader from '../../component/Loader'
 import logoImg from '../../assets/logo.png';
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
-import { login } from "../../services/auth";
+import { login, saveUser } from "../../services/auth";
 
 import Actions from "../../actions/Authenticate/Authenticate"
 
@@ -44,7 +44,8 @@ class Login extends Component {
         .then((r) => {
           this.setState({loading: false})
           login(r.user[0].id)
-          
+          delete r.user.passwordHash
+          saveUser(JSON.stringify(r.user[0]))
           this.props.history.push({
             pathname: '/Dashboard',
             param: {

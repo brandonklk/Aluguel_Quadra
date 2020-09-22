@@ -25,15 +25,6 @@
     background: #cfff95;
 }
 
-.nav-style {
-    /* border-top: 10px solid #9ccc65; */
-    background: #9ccc65;
-}
-
-.user-name {
-    color: white
-}
-
 .react-calendar {
     width: 100%;
     border-radius: 1em; 

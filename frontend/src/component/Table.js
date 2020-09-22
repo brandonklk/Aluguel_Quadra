@@ -34,10 +34,14 @@ const  TableHead =  props => {
 }
 
 const TableBody = props => {
+    const tbody = {
+        padding:'1em'
+    }
+    
     const isDelete = (index) => {
         let template = ''
         if (typeof props.FuncDelete === 'function') {
-            template = <td><button onClick={() => props.FuncDelete(index)}>Remove</button></td> 
+            template = <td style={tbody} ><button onClick={() => props.FuncDelete(index)}>Remove</button></td> 
         }
         return template;
     }
@@ -45,14 +49,11 @@ const TableBody = props => {
     const isEdit = (index) => {
         let template = ''
         if (typeof props.FuncEdit === 'function') {
-            template = <td><button onClick={() => props.FuncEdit(index)}>Editar</button></td> 
+            template = <td style={tbody}><button onClick={() => props.FuncEdit(index)}>Editar</button></td> 
         }
         return template;
     }
 
-    const tbody = {
-        padding:'1em'
-    }
     
     const rows = props.body.map((item, index) => {
         return (
@@ -64,8 +65,8 @@ const TableBody = props => {
                         );
                     })
                 }
-                {isDelete(index)}
-                {isEdit(index)}
+                {isDelete(item.id)}
+                {isEdit(item.id)}
             </tr>
         );
     });
