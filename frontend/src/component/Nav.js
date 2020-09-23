@@ -13,7 +13,7 @@ export default function Nav (props) {
         .then((r) => {
             setUser(r)
         })
-    }, []);
+    }, [props.id]);
     
     const logoutUser = () => {
         props.logout() 
@@ -40,16 +40,17 @@ export default function Nav (props) {
     return (
         <Navbar style={style.navStyle}>
             <Navbar.Brand>
+
             <img
                 src={logoImg}
                 width="80"
                 height="80"
                 className="d-inline-block align-top"
                 alt="Logo"
+                onClick={()=>{history.push('/Dashboard')}}
             />
             </Navbar.Brand>
-
-            <span className="user-name" style={style.nameTitle}>Aluguel de quadras</span>
+            <span className="user-name" style={style.nameTitle} onClick={()=>{history.push('/Dashboard')}}>Aluguel de quadras</span>
             
             <Navbar.Collapse className="justify-content-end">
                 <Image src={user.image_base_64} roundedCircle height="60" width="60" style={style.img}/><br/>

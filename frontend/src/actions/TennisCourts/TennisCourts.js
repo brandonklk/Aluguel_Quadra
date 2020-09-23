@@ -1,5 +1,5 @@
 import Api from '../../services/api'
-import { getToken, getUser } from '../../services/auth'
+import { getUser } from '../../services/auth'
 
 const ActionsTennisCourts = (router) => {
     const user = JSON.parse(getUser())
@@ -20,7 +20,7 @@ const ActionsTennisCourts = (router) => {
         return new Promise((resolve, reject) => {
             Api.get(`/tennis_courts/id/${id}`)
                 .then(function(r){
-                    resolve(r.data)
+                    resolve(r.data[0])
                 })
                 .catch(function (error) {
                     reject(error)

@@ -4,7 +4,20 @@ const logger = require('../logger/logger');
 module.exports = {
 
     async getAll(req, res){
-        const tennisCourts = await connection('schedules').select('*');
+        const { user_id, date } =  req.query
+        
+        const tennisCourts = await connection('schedules').select('*')
+            .where((qb) => {
+
+                if (user_id)
+                    qb.andWhere({user_id: user_id})
+                
+                if (date)
+                    qb.andWhere('date','like',`%${date}%`)
+            })
+            .orderBy('date', 'ASC')
+            .orderBy('time', 'ASC')
+
 
         return res.json(tennisCourts);
     },

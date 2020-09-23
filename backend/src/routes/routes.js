@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.get('/users', UserController.getAllUsers);
 router.get('/users/:id', celebrate({
-    [Segments.BODY]: Joi.object().keys({
+    [Segments.PARAMS]: Joi.object().keys({
         id: Joi.number().required()
     })
 }), UserController.getUserById);
@@ -100,5 +100,6 @@ router.post('/create_schedules', celebrate({
 }), SchedulesController.create);
 
 router.get('/schedules', SchedulesController.getAll);
+router.get('/schedules/:param', SchedulesController.getAll);
 
 module.exports = router;
