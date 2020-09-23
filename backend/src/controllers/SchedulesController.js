@@ -55,6 +55,19 @@ module.exports = {
         });
 
         logger.info("Schedule successfully created");
-        return res.json({ success: 'Tennis court successfully deleted' });
+        return res.json({ success: 'Tennis court successfully created' });
+    },
+
+    async deleteSchedules(req, res){
+        const { user, reservation_id } = req.body;
+        const deleteReservation = await connection('schedules')
+            .where({id: reservation_id, user_id: user}).del();
+        
+        if(deleteReservation == 0) {
+            return res.status(400).send({ error: 'Reservation not found' });
+        }
+  
+        logger.info("Schedule successfully delete");
+        return res.status(200).send({ success: 'Tennis court successfully delete' });
     }
 };

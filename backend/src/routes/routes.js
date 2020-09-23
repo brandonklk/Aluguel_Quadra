@@ -99,6 +99,13 @@ router.post('/create_schedules', celebrate({
     })
 }), SchedulesController.create);
 
+router.delete('/delete_schedule', celebrate({
+    [Segments.BODY]: Joi.object().keys({
+        user: Joi.number().required(),
+        reservation_id: Joi.number().required()
+    })
+}), SchedulesController.deleteSchedules);
+
 router.get('/schedules', SchedulesController.getAll);
 router.get('/schedules/:param', SchedulesController.getAll);
 
