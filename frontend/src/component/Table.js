@@ -1,14 +1,17 @@
 import React, { Component } from 'react'
-// import {tHead} from './styles'
+import { GrTrash, GrEdit } from 'react-icons/gr'
 
+const iconsStyle = {
+    'cursor': 'pointer'
+}
 const  TableHead =  props => {
     const isDelete = (index) => {
         if (typeof props.FuncDelete === 'function') {
-            props.head.push('Remover')
+            // props.head.push('Edit')
         }
 
         if (typeof props.FuncEdit === 'function') {
-            props.head.push('Editar')
+            // props.head.push('Editar')
         }
     }
     isDelete()
@@ -34,10 +37,17 @@ const  TableHead =  props => {
 }
 
 const TableBody = props => {
+    const tbody = {
+        padding:'1em'
+    }
+    
+    
     const isDelete = (index) => {
         let template = ''
         if (typeof props.FuncDelete === 'function') {
-            template = <td><button onClick={() => props.FuncDelete(index)}>Remove</button></td> 
+            template =  <td style={tbody}>
+                            <GrTrash style={iconsStyle} onClick={()=>{props.FuncDelete(index)}}/>
+                        </td> 
         }
         return template;
     }
@@ -45,14 +55,13 @@ const TableBody = props => {
     const isEdit = (index) => {
         let template = ''
         if (typeof props.FuncEdit === 'function') {
-            template = <td><button onClick={() => props.FuncEdit(index)}>Editar</button></td> 
+            template =  <td style={tbody}>
+                            <GrEdit style={iconsStyle} onClick={()=>{props.FuncEdit(index)}}/>
+                        </td> 
         }
         return template;
     }
 
-    const tbody = {
-        padding:'1em'
-    }
     
     const rows = props.body.map((item, index) => {
         return (
@@ -64,8 +73,8 @@ const TableBody = props => {
                         );
                     })
                 }
-                {isDelete(index)}
-                {isEdit(index)}
+                {isEdit(item.id)}
+                {isDelete(item.id)}
             </tr>
         );
     });

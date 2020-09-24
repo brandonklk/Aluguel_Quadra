@@ -8,6 +8,12 @@ const SchedulesController = require('../controllers/SchedulesController');
 const router = express.Router();
 
 router.get('/users', UserController.getAllUsers);
+router.get('/users/:id', celebrate({
+    [Segments.PARAMS]: Joi.object().keys({
+        id: Joi.number().required()
+    })
+}), UserController.getUserById);
+
 router.post('/create_users', celebrate({
     [Segments.BODY]: Joi.object().keys({
         name: Joi.string().required().trim(),
@@ -94,12 +100,13 @@ router.post('/create_schedules', celebrate({
 }), SchedulesController.create);
 
 router.delete('/delete_schedule', celebrate({
-    [Segments.BODY]: Joi.object().keys({
+    [Segments.QUERY]: Joi.object().keys({
         user: Joi.number().required(),
         reservation_id: Joi.number().required()
     })
 }), SchedulesController.deleteSchedules);
 
 router.get('/schedules', SchedulesController.getAll);
+router.get('/schedules/:param', SchedulesController.getAll);
 
 module.exports = router;

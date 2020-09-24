@@ -13,6 +13,17 @@ module.exports = {
         return res.json(users);
     },
 
+    async getUserById(req, res) {
+      const { id } = req.params
+
+      const user = await connection('users').where({id: id})
+      
+      if (!user[0])
+        return res.status(204).send()
+
+      return res.status(200).send(user[0])
+    },
+
     async create(req, res){
         const { name, email, password,  phone } = req.body;
         
@@ -49,7 +60,7 @@ module.exports = {
     async authenticate(req, res){
         const { email, password } = req.body;
 
-        const user = await connection('users').select('email', 'passwordHash').where('email', '=', email);
+        const user = await connection('users').select('id', 'name', 'email', 'passwordHash').where('email', '=', email);
 
         if(user.length === 0) {
           return res.status(400).send({ error: 'User not found' });

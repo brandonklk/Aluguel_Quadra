@@ -4,7 +4,20 @@ const logger = require('../logger/logger');
 module.exports = {
 
     async getAll(req, res){
-        const tennisCourts = await connection('schedules').select('*');
+        const { user_id, date } =  req.query
+        
+        const tennisCourts = await connection('schedules').select('*')
+            .where((qb) => {
+
+                if (user_id)
+                    qb.andWhere({user_id: user_id})
+                
+                if (date)
+                    qb.andWhere('date','like',`%${date}%`)
+            })
+            .orderBy('date', 'ASC')
+            .orderBy('time', 'ASC')
+
 
         return res.json(tennisCourts);
     },
@@ -45,8 +58,9 @@ module.exports = {
         return res.json({ success: 'Tennis court successfully created' });
     },
 
-    async deleteSchedules(req, res){
-        const { user, reservation_id } = req.body;
+    async deleteSchedules (req, res) {
+        const { user, reservation_id } = req.query
+        
         const deleteReservation = await connection('schedules')
             .where({id: reservation_id, user_id: user}).del();
         
