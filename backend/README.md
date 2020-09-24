@@ -22,3 +22,9 @@
 ## Rollback na ultima tabela(migrate) criada
 
 - `npx knex migrate:rollback`
+
+## Criar novo arquivo de seed
+knex seed:make nome_seed
+
+## Colocar os dados em base
+knex seed:run 
