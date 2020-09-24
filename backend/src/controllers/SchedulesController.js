@@ -58,8 +58,9 @@ module.exports = {
         return res.json({ success: 'Tennis court successfully created' });
     },
 
-    async deleteSchedules(req, res){
-        const { user, reservation_id } = req.body;
+    async deleteSchedules (req, res) {
+        const { user, reservation_id } = req.query
+        
         const deleteReservation = await connection('schedules')
             .where({id: reservation_id, user_id: user}).del();
         

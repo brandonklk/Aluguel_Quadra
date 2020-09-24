@@ -100,7 +100,7 @@ router.post('/create_schedules', celebrate({
 }), SchedulesController.create);
 
 router.delete('/delete_schedule', celebrate({
-    [Segments.BODY]: Joi.object().keys({
+    [Segments.QUERY]: Joi.object().keys({
         user: Joi.number().required(),
         reservation_id: Joi.number().required()
     })

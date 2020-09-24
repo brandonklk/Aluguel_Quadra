@@ -96,16 +96,17 @@ const ActionsSchedules = (router) => {
         // })
     }
 
-    function remove (id) {
+    function remove (Object) {
+        Object.user = user.id
         return new Promise((resolve, reject) => {
-            resolve(1)
-            // Api.get(`/delete-schedule}/${id}`)
-            //     .then(function(r){
-            //         resolve(r)
-            //     })
-            //     .catch(function (error) {
-            //         reject(error)
-            //     })
+            Api.delete(`/delete_schedule`, {params: Object})
+                .then(function(r){
+                    console.log('r', r)
+                    resolve(r)
+                })
+                .catch(function (error) {
+                    reject(error)
+                })
         })
     }
 

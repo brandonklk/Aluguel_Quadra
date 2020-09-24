@@ -1,6 +1,6 @@
 import React, {useState, useEffect, Fragment} from 'react'
 import { Col, Container, Row, Modal, Button, ButtonGroup, Card  } from 'react-bootstrap'
-import { GrClock, GrRotateLeft, GrTrash, GrEdit } from "react-icons/gr";
+import { GrClock, GrTrash } from "react-icons/gr";
 
 import Calendar  from 'react-calendar'
 import 'react-calendar/dist/Calendar.css';
@@ -12,10 +12,9 @@ import ActionsSchedules from '../../actions/Schedules/Schedules'
 import ActionsTennisCourts from '../../actions/TennisCourts/TennisCourts'
 
 import './Dashboard.css'
-import { getUser } from '../../services/auth';
 
 export default function Dashboard (props) {
-    // Apagar Depois 
+    // Apagar Depois Quando quadra estiver dinamica
     let quadra = null
     ActionsTennisCourts.getAll().then((r) => {quadra = r[0]})
     
@@ -65,7 +64,7 @@ export default function Dashboard (props) {
                     <Card.Subtitle className="mb-2 text-muted"> 
                         > {h.horario_inicio} às {h.horario_fim} - R$:{h.valor} 
                         {/* <Button variant="danger">Remover</Button> */}
-                        {trash ? <GrTrash/> :''}
+                        {trash ? <GrTrash className="button-delete" onClick={() =>{ removerScheduling(item) }}/> :''}
                     </Card.Subtitle>);
                 })}
                 <hr/>
@@ -163,9 +162,15 @@ export default function Dashboard (props) {
     }
 
     const removerScheduling = item => {
-        console.log('item',item)
-        // console.log('removerScheduling')
-        // ActionsSchedules.remove(id)
+        setLoading(true)
+        ActionsSchedules.remove({
+                user: null,
+                reservation_id: item.id,
+            })
+            .then((r) => {
+                filter({callBack: () => {handleClose()}})
+            })
+            .catch((error) => {console.log(error)})
     }
 
     return (
@@ -204,11 +209,7 @@ export default function Dashboard (props) {
                 <Row>
                     <Col className="container-agendamento">
                     <h3>Agendamentos: {arrayScheduling.length === 0 ? 'Nenhum agendamento' : ''}</h3>
-                    {/* <ButtonGroup aria-label="Basic example"> */}
-                        {/* <Button variant="success" onClick={filter}><GrRotateLeft /> Buscar todos</Button> */}
-                        {/* <Button variant="success">Por data do caléndario</Button> */}
-                    {/* </ButtonGroup> */}
-                    <TemplateAgendamentos arr={arrayScheduling}/>
+                        <TemplateAgendamentos arr={arrayScheduling}/>
                     </Col>
 
                     <Col md="6">
