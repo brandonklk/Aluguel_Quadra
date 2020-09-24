@@ -2,15 +2,13 @@ import Api from '../../services/api'
 import { getUser } from '../../services/auth'
   
 const ActionsSchedules = (router) => {
-    const user = JSON.parse(getUser())
-
-    function getAll (param = {user_id: user.id}) {
-        if(param) {
-            let key = Object.keys(param)
-            param = key.map((i)=>`${i}=${param[i]}`).join('&')
-        }
+    
+    
+    function getAll (param = {user_id: null}) {
+        const user = JSON.parse(getUser())
+        param.user_id = user.id
         return new Promise((resolve, reject) => {
-            Api.get(`/schedules/?${param}`)
+            Api.get(`/schedules`, {params: param})
                 .then(function(r){
                     let schedules = r.data
                     resolve(schedules)
@@ -72,6 +70,7 @@ const ActionsSchedules = (router) => {
     // }
     
     function create (Object) {
+        const user = JSON.parse(getUser())
         return new Promise((resolve, reject) => {
             Object.user_id = user.id
             Api.post('/create_schedules', Object)
@@ -97,6 +96,7 @@ const ActionsSchedules = (router) => {
     }
 
     function remove (Object) {
+        const user = JSON.parse(getUser())
         Object.user = user.id
         return new Promise((resolve, reject) => {
             Api.delete(`/delete_schedule`, {params: Object})
