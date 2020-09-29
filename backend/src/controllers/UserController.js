@@ -25,7 +25,7 @@ module.exports = {
     },
 
     async create(req, res){
-        const { name, email, password,  phone } = req.body;
+        const { name, email, password,  phone, image_base_64 } = req.body;
         
       
             const passwordHash = await encryptedPwd(password);
@@ -35,6 +35,7 @@ module.exports = {
                 email,
                 passwordHash,
                 phone,
+                image_base_64,
             })
             logger.info("User create success");
             return res.json({ email });
