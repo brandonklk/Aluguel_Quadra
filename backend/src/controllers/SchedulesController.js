@@ -22,7 +22,7 @@ module.exports = {
         return res.json(tennisCourts);
     },
 
-    async create(req, res){
+    async create(req, res) {
         const { date, time, user_id, tennis_court_id } = req.body;
 
         const user = await connection('users').select('id').where('id', '=', user_id);
@@ -38,7 +38,7 @@ module.exports = {
 
         const schedule = await connection('schedules').select('id')
             .where('date', 'like', date)
-            .andWhere('time', 'like', time)
+            .andWhere('time', 'in', time)
             .andWhere('tennis_court_id', '=', tennis_court_id);
 
         if(schedule.length > 0) {
@@ -46,16 +46,23 @@ module.exports = {
                 error: 'Scheduling already carried out for this date, time and tennis court'
             })
         }
+        
+        const trx = await connection.transaction();
+        const schedulesOfIds = []
+        for(t in time) {
+            const schedule = await trx('schedules').insert({
+                date,
+                time: time[t],
+                user_id,
+                tennis_court_id
+            });
 
-        await connection('schedules').insert({
-            date,
-            time,
-            user_id,
-            tennis_court_id
-        });
-
+            schedulesOfIds.push(schedule[0])
+        }
+        
+        trx.commit()
         logger.info("Schedule successfully created");
-        return res.json({ success: 'Tennis court successfully created' });
+        return res.json({ schedules_ids: schedulesOfIds, success: 'Tennis court successfully created' });
     },
 
     async deleteSchedules (req, res) {

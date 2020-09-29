@@ -23,12 +23,6 @@ router.post('/create_users', celebrate({
     })
 }), UserController.create);
 
-// router.post('/request_password_user',  celebrate({
-//     [Segments.BODY]: Joi.object().keys({
-//         email: Joi.string().required().email().trim(),
-//     })
-// }), UserController.requestResetPassword);
-
 router.post('/authenticate', celebrate({
     [Segments.BODY]: Joi.object().keys({
         email: Joi.string().required().email().trim(),
@@ -93,7 +87,7 @@ router.get('/delete_tennis_courts/name/:name', celebrate({
 router.post('/create_schedules', celebrate({
     [Segments.BODY]: Joi.object().keys({
         date: Joi.string().required().trim(),
-        time: Joi.string().required().trim(),
+        time: Joi.array().required(),
         user_id: Joi.number().required(),
         tennis_court_id: Joi.number().required()
     })
