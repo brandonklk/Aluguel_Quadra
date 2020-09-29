@@ -4,7 +4,7 @@ const logger = require('../logger/logger');
 module.exports = {
 
     async getAll(req, res){
-        const { user_id, date } =  req.query
+        const { user_id, date, date_begin } =  req.query
         
         const tennisCourts = await connection('schedules').select('*')
             .where((qb) => {
@@ -14,6 +14,9 @@ module.exports = {
                 
                 if (date)
                     qb.andWhere('date','like',`%${date}%`)
+
+                if (date_begin)
+                    qb.andWhere('date', '>=', date_begin)
             })
             .orderBy('date', 'ASC')
             .orderBy('time', 'ASC')

@@ -40,7 +40,11 @@ export default function Dashboard (props) {
         const y = date.getFullYear()
         const date_filter = `${d}/${m}/${y}`
       
-        filter({setCopyScheduling:setCopyScheduling, date: date_filter, callBack: () => { handleModalSchedulingShow()}})
+        filter({setCopyScheduling:setCopyScheduling, 
+            filter: {
+                date: date_filter
+            } , 
+            callBack: () => { handleModalSchedulingShow()}})
     }
     
     const onClickAgendamento = (item) => {
@@ -156,7 +160,7 @@ export default function Dashboard (props) {
         const setArrayCopy = typeof param.setCopyScheduling === 'function'
         
         setLoading(true)
-        ActionsSchedules.getAll(setArrayCopy ? {date: param.date} : undefined)
+        ActionsSchedules.getAll(param.filter ? param.filter : undefined)
             .then((r) => {
                 setLoading(false)
                 if (setArrayCopy) {

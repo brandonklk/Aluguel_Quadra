@@ -101,6 +101,5 @@ router.delete('/delete_schedule', celebrate({
 }), SchedulesController.deleteSchedules);
 
 router.get('/schedules', SchedulesController.getAll);
-router.get('/schedules/:param', SchedulesController.getAll);
 
 module.exports = router;
