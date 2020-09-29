@@ -3,7 +3,6 @@ import { getUser } from '../../services/auth'
   
 const ActionsSchedules = (router) => {
     
-    
     function getAll (param = {user_id: null}) {
         const user = JSON.parse(getUser())
         param.user_id = user.id
@@ -69,11 +68,13 @@ const ActionsSchedules = (router) => {
     //     })
     // }
     
-    function create (Object) {
+    function create (objeto) {
         const user = JSON.parse(getUser())
+       
         return new Promise((resolve, reject) => {
-            Object.user_id = user.id
-            Api.post('/create_schedules', Object)
+            objeto.user_id = user.id
+
+            Api.post('/create_schedules', objeto)
                 .then(function(r) {
                     resolve(r.data)
                 })

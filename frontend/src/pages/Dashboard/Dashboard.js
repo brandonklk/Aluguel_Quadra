@@ -15,8 +15,7 @@ import './Dashboard.css'
 
 export default function Dashboard (props) {
     // Apagar Depois Quando quadra estiver dinamica
-    let quadra = null
-    ActionsTennisCourts.getAll().then((r) => {quadra = r[0]})
+    const [quadra, setQuadra] = useState(0)
     
     const [loading, setLoading] = useState(false);
     const [show, setShow] = useState(false);
@@ -53,6 +52,18 @@ export default function Dashboard (props) {
 
     useEffect(() => {
         filter({})
+    }, []);
+
+    /*Buscando por quadra fixa*/
+    useEffect(() => {
+        ActionsTennisCourts.getAll()
+            .then((r) => {
+                setQuadra(r[0])
+            })
+            .catch((error) => {
+                console.error(error)
+                // window.reload
+            })
     }, []);
 
     const renderHorarios = (item, trash = false) => {
@@ -125,8 +136,9 @@ export default function Dashboard (props) {
         setLoading(true)
         ActionsSchedules.create({
             date: `${d}/${m}/${y}`,
-            time: array[0],
-            tennis_court_id: quadra.id
+            time: array,
+            tennis_court_id: quadra.id,
+            user_id: undefined,
         }).then((r) => {
             setLoading(false)
             filter({callBack: () => {handleModalSchedulingClose()}})
@@ -141,14 +153,13 @@ export default function Dashboard (props) {
     }
 
     const filter = (param) => {
-        const filtroPorData = typeof param.setCopyScheduling === 'function'
-        // {date: '21/10/2020'}
+        const setArrayCopy = typeof param.setCopyScheduling === 'function'
         
         setLoading(true)
-        ActionsSchedules.getAll(filtroPorData ? {date: param.date} : undefined)
+        ActionsSchedules.getAll(setArrayCopy ? {date: param.date} : undefined)
             .then((r) => {
                 setLoading(false)
-                if (filtroPorData) {
+                if (setArrayCopy) {
                     param.setCopyScheduling(r)
                     param.callBack()
                     return
