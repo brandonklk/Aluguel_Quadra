@@ -77,7 +77,7 @@ export default function Dashboard (props) {
                 {item.horarios.map((h) => {
                     return (
                     <Card.Subtitle className="mb-2 text-muted"> 
-                        > {h.horario_inicio} às {h.horario_fim} - R$:{h.valor} 
+                        > {h.horario_inicio} às {h.horario_fim} - R$ {h.valor} 
                         {/* <Button variant="danger">Remover</Button> */}
                         {trash ? <GrTrash className="button-delete" onClick={() =>{ removerScheduling(item) }}/> :''}
                     </Card.Subtitle>);
@@ -100,8 +100,8 @@ export default function Dashboard (props) {
             const horario_fim = horarioFim >= 10 ? `${horarioFim}:00` : `0${horarioFim}:00` 
 
             element.name = `${weekday[date.getDay()]} - ${element.date}`
-            element.valor_total = "00.00"
-            element.horarios = [{horario_inicio: element.time , horario_fim: horario_fim, valor: "00.00"}]
+            element.valor_total = "150,00"
+            element.horarios = [{horario_inicio: element.time , horario_fim: horario_fim, valor: "110,00"}]
         });
 
         return (
@@ -112,7 +112,7 @@ export default function Dashboard (props) {
                             <Card body className="mt-2" onClick={()=> {onClickAgendamento(item)}}>
                                 <Card.Title>{item.name}</Card.Title>
                                 {renderHorarios(item)}
-                                <Card.Subtitle className="mb-2 text-muted">Valor total: R$: {item.valor_total}</Card.Subtitle>
+                                <Card.Subtitle className="mb-2 text-muted">Valor total: R$ {item.valor_total}</Card.Subtitle>
                             </Card>
                         </Fragment>
                     ))
@@ -125,7 +125,7 @@ export default function Dashboard (props) {
         return (
             <div>
                 {item.horarios ? renderHorarios(item, true) : ''}
-                <Card.Subtitle className="mb-2 text-muted">Valor total: R$:{item.valor_total}</Card.Subtitle>
+                <Card.Subtitle className="mb-2 text-muted">Valor total: R$ {item.valor_total}</Card.Subtitle>
             </div>
         );
     }
