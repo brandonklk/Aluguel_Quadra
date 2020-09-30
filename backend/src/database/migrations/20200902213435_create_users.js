@@ -6,6 +6,7 @@ exports.up = function(knex) {
       table.string('passwordHash').notNullable();
       table.string('phone').notNullable();
       table.string('token');
+      table.string('image_base_64');
     });
   };
   

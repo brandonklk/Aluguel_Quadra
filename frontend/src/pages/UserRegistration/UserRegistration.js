@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { Container, Row, Col , InputGroup, FormControl, Button } from 'react-bootstrap'
 import Loader from '../../component/Loader'
+import InputImage from '../../component/InputImage'
 
 import Actions from '../../actions/UserRegistration/UserRegistration'
 import './UserRegistration.css'
@@ -18,13 +19,13 @@ class UserRegistration extends Component {
                 name: '',
                 password: '',
                 email: '',
-                fone: ''
+                fone: '',
+                base64: ''
             }
         }
     }
 
     clearState = () => {
-        console.log('this.stateInitial',this.getInitialize())
         this.setState(this.getInitialize())
     }
 
@@ -58,13 +59,28 @@ class UserRegistration extends Component {
         this.setState({form: forms})
     }
 
+    setBase64 = (event) => {
+        let forms = this.state.form
+        const {value} = event.target
+        forms.base64 = value
+        this.setState({form: forms})
+    }
+
+    callbackSetBase64 = (value) => {
+        let forms = this.state.form
+        forms.base64 = value
+        console.log(forms)
+        this.setState({form: forms})
+    }
+        
     submit = () => {
         this.setState({loading: true})
         Actions.createUser({
             name: this.state.form.name,
             email: this.state.form.email,
             password: this.state.form.password,
-            phone: this.state.form.fone
+            phone: this.state.form.fone,
+            image_base_64: this.state.form.base64
         })
         .then((r) => {
             const email = this.state.form.email
@@ -144,14 +160,18 @@ class UserRegistration extends Component {
                                 onChange={this.setFone}
                                 />
                             </InputGroup>
-                        </Col>    
-                        
+                        </Col>   
+                    </Row>
+
+                    <InputImage callbackSetBase64={this.callbackSetBase64} base64={this.base64}/>
+
+                    <Row>
                         <Button variant="dark" type="button" className="mt-3 mr-3 ml-3 float-right" onClick={this.submit}>
                             Criar conta
                         </Button>
 
 
-                        <Button variant="link" type="button" className="mt-3 mr-3 ml-3 float-right" onClick={this.back}>
+                        <Button variant="link" type="button" className="mt-3 float-right" onClick={this.back}>
                             Cancelar
                         </Button>
                     </Row>
