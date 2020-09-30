@@ -101,7 +101,7 @@ export default function Dashboard (props) {
 
             element.name = `${weekday[date.getDay()]} - ${element.date}`
             element.valor_total = "150,00"
-            element.horarios = [{horario_inicio: element.time , horario_fim: horario_fim, valor: "110,00"}]
+            element.horarios = [{horario_inicio: element.time , horario_fim: horario_fim, valor: "150,00"}]
         });
 
         return (
