@@ -26,14 +26,16 @@ module.exports = {
 
     async create(req, res){
         const { name, email, password,  phone } = req.body;
-        
+            const image_base_64 = req.body.image_base_64 || null
+
             const passwordHash = await encryptedPwd(password);
         
             await connection('users').insert({
                 name,
                 email,
                 passwordHash,
-                phone
+                phone,
+                image_base_64
             })
             logger.info("User create success");
             return res.json({ email });
