@@ -120,7 +120,7 @@ const Actions$1 = (router) => {
         })
     }
 
-    function create (Object) {
+    function create () {
         return new Promise((resolve, reject) => {
             Api.post()
                 .then(function(r){
@@ -140,14 +140,6 @@ const Actions$1 = (router) => {
 
     }
     
-    function returnThen (r) {
-        console.log('r', r)
-    }
-    
-    function returnCatch (reject, error) {
-        reject(error)
-    }
-
     return {getAll, getById, create, edit, remove}
 }
 

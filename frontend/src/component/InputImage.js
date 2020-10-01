@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { createElement } from 'react'
 import { GrCloudUpload } from 'react-icons/gr'
 let callbackSetBase64 = () => {}
 
@@ -32,19 +32,34 @@ const handlerClick = () => {
     const elemtInputFile = document.getElementById('input-file');
 
     elemtInputFile.onchange = e => {
+        if(!e.target.files.length) {
+            document.getElementById("imgTest").innerHTML  = ''  
+            callback(null)
+            return
+        }
+
         let file = e.target.files[0]
-        
+           
         const reader = new FileReader()
         reader.onload = (fileLoadedEvent) => {
             const base64 = fileLoadedEvent.target.result
             const image = new Image();
             
+            let c = document.createElement('canvas');
+            let ctx = c.getContext('2d');
+            
+            image.onload = () => {
+                ctx.drawImage(image, 0, 0, 300, 150);
+                callback(c.toDataURL())
+            }
+            
             image.src = base64
             document.getElementById("imgTest").innerHTML = image.outerHTML
-
-            callback(base64)
+            // callback(base64)
         }
+        
         reader.readAsDataURL(file)
+        
     }
     elemtInputFile.click()
 }
