@@ -26,7 +26,7 @@ module.exports = {
 
     async create(req, res){
         const { name, email, password,  phone } = req.body;
-            const image_base_64 = req.body.image_base_64 || null
+            const image_base_64 = req.body.image_base_64 || ''
 
             const passwordHash = await encryptedPwd(password);
         

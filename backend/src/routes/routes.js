@@ -20,7 +20,7 @@ router.post('/create_users', celebrate({
         email: Joi.string().required().email().trim(),
         password: Joi.string().required().min(6).max(12),
         phone: Joi.string().required().min(11).max(15).trim(),
-        image_base_64: Joi.string(),
+        image_base_64: Joi.string()
     })
 }), UserController.create);
 

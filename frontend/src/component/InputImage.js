@@ -32,10 +32,17 @@ const handlerClick = () => {
     const elemtInputFile = document.getElementById('input-file');
 
     elemtInputFile.onchange = e => {
+        if(!e.target.files.length) {
+            document.getElementById("imgTest").innerHTML  = ''  
+            callback(null)
+            return
+        }
+
         let file = e.target.files[0]
-        
+           
         const reader = new FileReader()
         reader.onload = (fileLoadedEvent) => {
+
             const base64 = fileLoadedEvent.target.result
             const image = new Image();
             
@@ -44,7 +51,9 @@ const handlerClick = () => {
 
             callback(base64)
         }
+        
         reader.readAsDataURL(file)
+        
     }
     elemtInputFile.click()
 }
