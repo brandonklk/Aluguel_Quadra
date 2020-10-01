@@ -4,8 +4,11 @@ import { getUser } from '../../services/auth'
 const ActionsSchedules = (router) => {
     
     function getAll (param = {user_id: null}) {
-        const user = JSON.parse(getUser())
-        param.user_id = user.id
+        if (!param.date) {
+            const user = JSON.parse(getUser())
+            param.user_id = user.id
+        }
+        
         return new Promise((resolve, reject) => {
             Api.get(`/schedules`, {params: param})
                 .then(function(r){
