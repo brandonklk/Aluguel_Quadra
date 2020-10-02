@@ -196,7 +196,7 @@ export default function Dashboard (props) {
             <Container className="mt-5">
                 <Modal show={show} onHide={handleClose}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Agendamento: {item.descricao} <GrClock/></Modal.Title>
+                        <Modal.Title>Agendamento {item.name} <GrClock/></Modal.Title>
                     </Modal.Header>
                 
                     <Modal.Body>
