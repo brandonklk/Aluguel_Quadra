@@ -29,7 +29,8 @@ export default function Nav (props) {
             // z-index: 2;
         },
         img: {
-            'box-shadow': '0px 0px 22px white'
+            'box-shadow': '0px 0px 10px black',
+            "border": '1px solid white'
         },
         nameTitle: {
             'font-style': 'italic',
