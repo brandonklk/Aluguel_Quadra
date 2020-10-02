@@ -19,17 +19,20 @@ export default function TennisCourts () {
     const handleModalEditShow = () => setShowModalEdit(true);
 
     const validationSchema = Yup.object({
-        name: Yup.string().required('O nome é obrigatório')
+        name: Yup.string().required('O nome é obrigatório'),
+        value: Yup.number().required('O valor é obrigatório')
     })
 
-    const create = values => {
-        const {name} = values
+    const create = (values, { resetForm }) => {
+        const {name, value} = values
+
         setLoading(true)
-        Actions.create({name})
+        Actions.create({name, value})
             .then((r) => {
                 setLoading(false)
                 if (r.id) 
                     getList()
+                    resetForm({})
             })
             .catch((error) => {
                 setLoading(false)
@@ -38,11 +41,13 @@ export default function TennisCourts () {
 
     const formik = useFormik({
         initialValues: {
-            name: ''
+            name: '',
+            value: ''
         },
         onSubmit: create,
         validationSchema});
 
+    
     useEffect(() => {
         getList()
     }, []);
@@ -80,11 +85,13 @@ export default function TennisCourts () {
     }
 
     const edit = () => {
+        const {id, name, value} = item
+
         setLoading(true)
-        Actions.edit(
-            {
-                id: item.id,
-                name: item.name
+        Actions.edit({
+                id,
+                name,
+                value
             }).then((r)=>{
                 setLoading(false)
                 handleModalEditClose()                
@@ -112,6 +119,14 @@ export default function TennisCourts () {
                                     onChange={(e) => {setItem({...item, name: e.target.value})}}
                                 />
                             </InputGroup> 
+                            <InputGroup className="mt-3">
+                                <FormControl
+                                    placeholder="Valor"
+                                    name="valor"
+                                    value={item.value}
+                                    onChange={(e) => {setItem({...item, value: e.target.value})}}
+                                />
+                            </InputGroup> 
                     </Modal.Body>
                 
                     <Modal.Footer>
@@ -123,11 +138,11 @@ export default function TennisCourts () {
             <Container className="mt-5">
                 <h1 className="title">Cadastro de Quadra</h1>
                 <Row>
-                    <Table head={['Id','Nome']} body={list} FuncDelete={FuncDelete} FuncEdit={FuncEdit}/>
+                    <Table head={['Id','Nome','Valor hora']} body={list} FuncDelete={FuncDelete} FuncEdit={FuncEdit}/>
                 </Row>
                 <form onSubmit={formik.handleSubmit} className={!formik.isValid ? 'not-valid' : ''} autoComplete="off">
                     <Row>
-                        <Col md="12">
+                        <Col md="6">
                             <InputGroup className="mt-3">
                                 <FormControl
                                     placeholder="Nome"
@@ -139,6 +154,21 @@ export default function TennisCourts () {
                             {formik.errors.name 
                                 ? <div className="feed-back-error-input">{formik.errors.name}</div>
                                 :''
+                            }
+                        </Col>
+                        <Col md="6">
+                            <InputGroup className="mt-3">
+                                <FormControl
+                                    type="number"
+                                    placeholder="Valor"
+                                    name="value"
+                                    onChange={formik.handleChange}
+                                    value={formik.values.value}
+                            />
+                            </InputGroup> 
+                            {formik.errors.value
+                                ? <div className="feed-back-error-input">{formik.errors.value}</div>
+                                : ''
                             }
                         </Col>
                         <Col>

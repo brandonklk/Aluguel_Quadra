@@ -34,7 +34,7 @@ module.exports = {
     },
 
     async create(req, res){
-        const { name, owner_id } = req.body;
+        const { name, value ,owner_id } = req.body;
         let idTennisCourts;
 
         const owner = await connection('users').select('id').where('id', '=', owner_id);
@@ -45,6 +45,7 @@ module.exports = {
 
         await connection('tennis_courts').insert({
             name,
+            value,
             owner_id
         }).returning('id').then(([id]) => idTennisCourts = id);
 
@@ -53,9 +54,9 @@ module.exports = {
     },
 
     async update(req, res){
-        const { id, name } = req.body;
-  
-        tennisCourt = await connection('tennis_courts').update({'name': name}).where('id', '=', id);  
+        const { id, name, value , owner_id} = req.body;
+
+        tennisCourt = await connection('tennis_courts').update({name, value, owner_id}).where('id', '=', id);  
         
         if(tennisCourt == 0){
           return res.status(400).send({ error: 'Tennis court not found' });

@@ -74,6 +74,7 @@ export default function Dashboard (props) {
         return (
             <div>
                 <Card.Subtitle className="mb-2 text-muted">Horário{item.horarios.length > 1 ? 's' :''}:</Card.Subtitle>
+                {console.log('item::',item)}
                 {item.horarios.map((h) => {
                     return (
                     <Card.Subtitle className="mb-2 text-muted"> 
@@ -89,7 +90,6 @@ export default function Dashboard (props) {
 
     const TemplateAgendamentos = (props) => {
         const {arr} = props
-        console.log('Arr', arr)
         
         arr.forEach(element => {
             const weekday = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado']
@@ -101,7 +101,7 @@ export default function Dashboard (props) {
 
             element.name = `${weekday[date.getDay()]} - ${element.date}`
             element.valor_total = "150,00"
-            element.horarios = [{horario_inicio: element.time , horario_fim: horario_fim, valor: "110,00"}]
+            element.horarios = [{horario_inicio: element.time , horario_fim: horario_fim, valor: element.value}]
         });
 
         return (
@@ -223,7 +223,7 @@ export default function Dashboard (props) {
 
                 <Row>
                     <Col className="container-agendamento">
-                    <h3>Agendamentos: {arrayScheduling.length === 0 ? 'Nenhum agendamento' : ''}</h3>
+                        <h3>Agendamentos: {arrayScheduling.length === 0 ? 'Nenhum agendamento' : ''}</h3>
                         <TemplateAgendamentos arr={arrayScheduling}/>
                     </Col>
 
