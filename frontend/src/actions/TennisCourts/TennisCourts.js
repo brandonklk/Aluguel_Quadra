@@ -2,7 +2,6 @@ import Api from '../../services/api'
 import { getUser } from '../../services/auth'
 
 const ActionsTennisCourts = (router) => {
-    const user = JSON.parse(getUser())
 
     function getAll () {
         return new Promise((resolve, reject) => {
@@ -40,10 +39,12 @@ const ActionsTennisCourts = (router) => {
         })
     }
 
-    function create (Object) {
+    function create (object) {
+        const user = JSON.parse(getUser())
+        
         return new Promise((resolve, reject) => {
-            Object.owner_id = user.id
-            Api.post('/create_tennis_courts', Object)
+            object.owner_id = user.id
+            Api.post('/create_tennis_courts', object)
                 .then(function(r) {
                     resolve(r.data)
                 })
@@ -53,9 +54,9 @@ const ActionsTennisCourts = (router) => {
         })
     }
     
-    function edit (Object) {
+    function edit (object) {
         return new Promise((resolve, reject) => {
-            Api.put('/update_tennis_courts', Object)
+            Api.put('/update_tennis_courts', object)
                 .then(function(r){
                     resolve(r)
                 })

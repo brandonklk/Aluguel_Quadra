@@ -1,4 +1,4 @@
-import React, { createElement } from 'react'
+import React from 'react'
 import { GrCloudUpload } from 'react-icons/gr'
 let callbackSetBase64 = () => {}
 

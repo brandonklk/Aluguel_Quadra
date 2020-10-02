@@ -1,5 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import { Container, Row, Col, InputGroup, FormControl, Button, Modal } from 'react-bootstrap'
+import { useFormik } from 'formik'
+import * as Yup from 'yup'
 
 import Loader from '../../component/Loader'
 import Table from '../../component/Table'
@@ -10,12 +12,36 @@ import './TennisCourts.css'
 export default function TennisCourts () {
     const [loading, setLoading] = useState('');
     const [list, setList] = useState([]);
-    const [name, setName] = useState('');
     const [item, setItem] = useState({});
 
     const [showModalEdit, setShowModalEdit ] = useState(false)
     const handleModalEditClose = () => setShowModalEdit(false);
     const handleModalEditShow = () => setShowModalEdit(true);
+
+    const validationSchema = Yup.object({
+        name: Yup.string().required('O nome é obrigatório')
+    })
+
+    const create = values => {
+        const {name} = values
+        setLoading(true)
+        Actions.create({name})
+            .then((r) => {
+                setLoading(false)
+                if (r.id) 
+                    getList()
+            })
+            .catch((error) => {
+                setLoading(false)
+            })
+    }
+
+    const formik = useFormik({
+        initialValues: {
+            name: ''
+        },
+        onSubmit: create,
+        validationSchema});
 
     useEffect(() => {
         getList()
@@ -31,19 +57,6 @@ export default function TennisCourts () {
                 }))
                 setLoading(false)
             })
-    }
-
-    const create = () => {
-        setLoading(true)
-        Actions.create({name: name})
-            .then((r) => {
-                setLoading(false)
-                setName('')
-                if (r.id) {
-                    getList()
-                }
-            })
-            .catch((error) => {})
     }
 
     const FuncDelete = (id) => {
@@ -112,25 +125,29 @@ export default function TennisCourts () {
                 <Row>
                     <Table head={['Id','Nome']} body={list} FuncDelete={FuncDelete} FuncEdit={FuncEdit}/>
                 </Row>
-
-                <Row>
-                    <Col md="">
-                        <InputGroup className="mt-3">
+                <form onSubmit={formik.handleSubmit} className={!formik.isValid ? 'not-valid' : ''} autoComplete="off">
+                    <Row>
+                        <Col md="12">
+                            <InputGroup className="mt-3">
                                 <FormControl
                                     placeholder="Nome"
-                                    aria-label="Nome"
-                                    aria-describedby="name"
-                                    value={name}
-                                    onChange={(e) => {setName(e.target.value)}}
+                                    name="name"
+                                    onChange={formik.handleChange}
+                                    value={formik.values.name}
                             />
-                            </InputGroup> 
-                    </Col>
-                    <Col md=" ">
-                        <Button variant="dark" type="button" className="mt-3 float-right" onClick={create}>
-                            Criar
-                        </Button>
-                    </Col>
-                </Row>
+                            </InputGroup>
+                            {formik.errors.name 
+                                ? <div className="feed-back-error-input">{formik.errors.name}</div>
+                                :''
+                            }
+                        </Col>
+                        <Col>
+                            <Button variant="dark" type="submit" className="mt-3 float-right">
+                                Criar
+                            </Button>
+                        </Col>
+                    </Row>
+                </form>
             </Container>
         </Fragment>
     );
