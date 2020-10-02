@@ -6,7 +6,9 @@ module.exports = {
     async getAll(req, res){
         const { user_id, date, date_begin } =  req.query
         
-        const tennisCourts = await connection('schedules').select('*')
+        const tennisCourts = await connection('schedules')
+            .select('schedules.id', 'schedules.date', 'schedules.time',
+                    'tennis_courts.name','tennis_courts.value').leftJoin('tennis_courts', 'schedules.tennis_court_id', 'tennis_courts.id')
             .where((qb) => {
 
                 if (user_id)

@@ -123,7 +123,7 @@ export default function TennisCourts () {
             <Container className="mt-5">
                 <h1 className="title">Cadastro de Quadra</h1>
                 <Row>
-                    <Table head={['Id','Nome']} body={list} FuncDelete={FuncDelete} FuncEdit={FuncEdit}/>
+                    <Table head={['Id','Nome','Valor hora']} body={list} FuncDelete={FuncDelete} FuncEdit={FuncEdit}/>
                 </Row>
                 <form onSubmit={formik.handleSubmit} className={!formik.isValid ? 'not-valid' : ''} autoComplete="off">
                     <Row>

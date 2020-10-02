@@ -2,6 +2,7 @@ exports.up = function(knex) {
     return knex.schema.createTable('tennis_courts', function(table) {
         table.increments('id');
         table.string('name').unique().notNullable();
+        table.decimal('value',10,2).notNullable();
         table.integer('owner_id').unsigned();
         table.foreign('owner_id').references("users.id");
       });
