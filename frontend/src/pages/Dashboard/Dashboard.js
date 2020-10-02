@@ -10,6 +10,7 @@ import Checklist from '../../component/Checklist'
 
 import ActionsSchedules from '../../actions/Schedules/Schedules'
 import ActionsTennisCourts from '../../actions/TennisCourts/TennisCourts'
+import { formatCurrency } from '../../helper'
 
 import './Dashboard.css'
 
@@ -78,7 +79,8 @@ export default function Dashboard (props) {
                 {item.horarios.map((h) => {
                     return (
                     <Card.Subtitle className="mb-2 text-muted"> 
-                        > {h.horario_inicio} às {h.horario_fim} - R$ {h.valor} 
+                        > {h.horario_inicio} às {h.horario_fim}
+                        {/* - R$ {h.valor}  */}
                         {/* <Button variant="danger">Remover</Button> */}
                         {trash ? <GrTrash className="button-delete" onClick={() =>{ removerScheduling(item) }}/> :''}
                     </Card.Subtitle>);
@@ -100,8 +102,8 @@ export default function Dashboard (props) {
             const horario_fim = horarioFim >= 10 ? `${horarioFim}:00` : `0${horarioFim}:00` 
 
             element.name = `${weekday[date.getDay()]} - ${element.date}`
-            element.valor_total = "150,00"
-            element.horarios = [{horario_inicio: element.time , horario_fim: horario_fim, valor: element.value}]
+            element.valor_total = formatCurrency(element.value)
+            element.horarios = [{horario_inicio: element.time , horario_fim: horario_fim}]
         });
 
         return (
