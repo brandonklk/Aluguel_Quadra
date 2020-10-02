@@ -55,7 +55,9 @@ const ActionsTennisCourts = (router) => {
     }
     
     function edit (object) {
+        const user = JSON.parse(getUser())
         return new Promise((resolve, reject) => {
+            object.owner_id = user.id
             Api.put('/update_tennis_courts', object)
                 .then(function(r){
                     resolve(r)
