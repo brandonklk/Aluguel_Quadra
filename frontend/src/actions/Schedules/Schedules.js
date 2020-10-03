@@ -1,6 +1,13 @@
 import Api from '../../services/api'
 import { getUser } from '../../services/auth'
-  
+import { agruparPor, formatCurrency } from '../../helper'
+
+function makeName (date) {
+    const weekday = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado']
+    const [d,m,y] = date.split('/')
+    return `${weekday[new Date(`${y}/${m}/${d}`).getDay()]} - ${date}`
+}
+
 const ActionsSchedules = (router) => {
     
     function getAll (param = {user_id: null}) {
@@ -11,9 +18,26 @@ const ActionsSchedules = (router) => {
         
         return new Promise((resolve, reject) => {
             Api.get(`/schedules`, {params: param})
-                .then(function(r){
-                    let schedules = r.data
-                    resolve(schedules)
+                .then(function(r) {
+                    const { data } = r
+                    let dataGroup = agruparPor(data, 'date')
+                    const schedules = []
+
+                    for (let i in dataGroup) {
+                        const date = i
+                        const horarios = dataGroup[i]
+                        const valor_total = formatCurrency(horarios.reduce((acc,crr) => acc + crr.value, 0))
+                        
+                        schedules.push({
+                            name: makeName(date),
+                            date,
+                            horarios,
+                            valor_total
+                        })
+                    }
+
+                    console.log('schedules', schedules)
+                    resolve({schedules, data})
                 })
                 .catch(function (error) {
                     reject(error)
