@@ -73,6 +73,9 @@ const UserRegistration = () => {
             <form onSubmit={formik.handleSubmit} className={!formik.isValid ? 'not-valid' : ''} autocomplete="off">
                 <Container>
                     <Loader loading={loading}/>
+                    <p className="title">
+                        Cadastro de Usuário
+                    </p>
                     <Row>
                         <Col md="6">
                             <input type="text" 
@@ -136,15 +139,18 @@ const UserRegistration = () => {
                     </Row>
 
                     <InputImage callbackSetBase64={callbackSetBase64}/>
-                
-                    <button type="button" variant="link" className="float-right" onClick={()=>{history.goBack()}}>
-                        <GrUndo/>Voltar
-                    </button>
-                    
-                    <button type="submit" variant="dark">
-                        Criar conta
-                    </button>
-
+                    <Row>
+                        <Col sm="6" md="6">
+                            <button type="submit" variant="dark">
+                                Criar conta
+                            </button>
+                        </Col>
+                        <Col sm="6" md="6">
+                            <button type="button" variant="link" className="float-right" onClick={()=>{history.goBack()}}>
+                                <GrUndo/>Voltar
+                            </button>
+                        </Col>
+                    </Row>
                 </Container>
             </form>
         </Fragment>
