@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom"
 import { Image, Navbar, NavDropdown } from 'react-bootstrap'
 import ActionsUserRegistration from '../actions/UserRegistration/UserRegistration'
 import logoImg from '../assets/logo.png'
+import { GrLogout, GrUserSettings } from "react-icons/gr";
 
 export default function Nav (props) {
     let history = useHistory()
@@ -37,7 +38,8 @@ export default function Nav (props) {
             'fontSize': '1.5em'
         },
         nameUser: {
-            'marginRight': '3.5em'
+            'marginRight': '3.5em',
+            'color': 'black'
         }
     }
 
@@ -64,8 +66,8 @@ export default function Nav (props) {
                 }                
                 
                 <NavDropdown title={user.name} style={style.nameUser} id="collasible-nav-dropdown">
-                    <NavDropdown.Item onClick={()=>{}}>Editar perfil</NavDropdown.Item>
-                    <NavDropdown.Item onClick={logoutUser}>Sair</NavDropdown.Item>
+                    <NavDropdown.Item onClick={()=>{}}>Editar perfil <GrUserSettings/></NavDropdown.Item>
+                    <NavDropdown.Item onClick={logoutUser}>Sair <GrLogout/></NavDropdown.Item>
                 </NavDropdown>
             </Navbar.Collapse>
         </Navbar>
