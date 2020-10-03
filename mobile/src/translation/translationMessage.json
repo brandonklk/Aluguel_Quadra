@@ -1,0 +1,7 @@
+{
+    "mailInvalid": "O e-mail deve ser em um formato valido",
+    "fieldRequired": "Esse campo é obrigatório",
+    "value6Min": "O valor minimo fornecido deve ser 6",
+    "value12Max": "O valor maximo fornecido deve ser 12",
+    "nameButtonDefault": "Enviar"
+}
