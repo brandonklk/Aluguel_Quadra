@@ -97,7 +97,7 @@ const Login = (props) => {
             
             <button variant="dark" className="mt-4 full" type="submit">Entrar</button>
             <button variant="link" className="mt-4 full" type="button" onClick={goViewForgotPassword}>Esqueceu a senha?</button>            
-            <button variant="mostarda" align-item="center" className="mt-4 full" size="sm" type="button" onClick={() => {this.props.history.push('/UserRegistration')}}>Criar Nova Conta</button>
+            <button variant="mostarda" align-item="center" className="mt-4 full" size="sm" type="button" onClick={() => {history.push('/UserRegistration')}}>Criar Nova Conta</button>
           </Col>
         </Row>
       </Container>
