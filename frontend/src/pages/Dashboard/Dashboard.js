@@ -1,15 +1,17 @@
 import React, {useState, useEffect, Fragment} from 'react'
 import { Col, Container, Row, Modal, Button, ButtonGroup, Card  } from 'react-bootstrap'
-import { GrClock, GrTrash } from "react-icons/gr";
+import { GrClock } from "react-icons/gr";
 
 import Calendar  from 'react-calendar'
 import 'react-calendar/dist/Calendar.css';
 
 import Loader from '../../component/Loader'
 import Checklist from '../../component/Checklist'
+import CardAgendamento from '../../component/CardAgendamento'
 
 import ActionsSchedules from '../../actions/Schedules/Schedules'
 import ActionsTennisCourts from '../../actions/TennisCourts/TennisCourts'
+
 
 import './Dashboard.css'
 
@@ -47,11 +49,7 @@ export default function Dashboard (props) {
             callBack: () => { handleModalSchedulingShow()}})
     }
     
-    const onClickAgendamento = (item) => {
-        setItem(item)
-        handleShow()
-    }
-
+    const onClickAgendamento = () => console.log('onClickAgendamento')
     let array = []
 
     useEffect(() => {
@@ -69,67 +67,6 @@ export default function Dashboard (props) {
                 // window.reload
             })
     }, []);
-
-    const renderHorarios = (item, trash = false) => {
-        return (
-            <div>
-                <Card.Subtitle className="mb-2 text-muted">Horário{item.horarios.length > 1 ? 's' :''}:</Card.Subtitle>
-                {item.horarios.map((h) => {
-                    return (
-                    <Card.Subtitle className="mb-2 text-muted"> 
-                        > {h.horario_inicio} às {h.horario_fim} - R$ {h.valor} 
-                        {/* <Button variant="danger">Remover</Button> */}
-                        {trash ? <GrTrash className="button-delete" onClick={() =>{ removerScheduling(item) }}/> :''}
-                    </Card.Subtitle>);
-                })}
-                <hr/>
-            </div>
-        );
-    }
-
-    const TemplateAgendamentos = (props) => {
-        const {arr} = props
-        console.log('Arr', arr)
-        
-        arr.forEach(element => {
-            const weekday = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado']
-            const [d,m,y] = element.date.split('/')
-            const date = new Date(`${y}/${m}/${d}`)
-            
-            const horarioFim = ((element.time.split(':')[0]*1)+1)
-            const horario_fim = horarioFim >= 10 ? `${horarioFim}:00` : `0${horarioFim}:00` 
-
-            element.name = `${weekday[date.getDay()]} - ${element.date}`
-            element.valor_total = "150,00"
-            element.horarios = [{horario_inicio: element.time , horario_fim: horario_fim, valor: "110,00"}]
-        });
-
-        return (
-            <Fragment>
-                {
-                    arr.map((item) => (
-                        <Fragment>
-                            <Card body className="mt-2" onClick={()=> {onClickAgendamento(item)}}>
-                                <Card.Title>{item.name}</Card.Title>
-                                {renderHorarios(item)}
-                                <Card.Subtitle className="mb-2 text-muted">Valor total: R$ {item.valor_total}</Card.Subtitle>
-                            </Card>
-                        </Fragment>
-                    ))
-                }
-            </Fragment>
-        );
-    }
-
-    const renderConteudoDeModal = () => {
-        return (
-            <div>
-                {item.horarios ? renderHorarios(item, true) : ''}
-                <Card.Subtitle className="mb-2 text-muted">Valor total: R$ {item.valor_total}</Card.Subtitle>
-            </div>
-        );
-    }
-
 
     const saveOnScheduling = () => {
         const d = date.getDate() < 10 ? `0${date.getDate()*1}`: date.getDate()*1
@@ -164,12 +101,12 @@ export default function Dashboard (props) {
             .then((r) => {
                 setLoading(false)
                 if (setArrayCopy) {
-                    param.setCopyScheduling(r)
+                    param.setCopyScheduling(r.data)
                     param.callBack()
                     return
                 }
                 
-                setScheduling(r)
+                setScheduling(r.schedules)
                 if (typeof param.callBack === 'function')
                     param.callBack()
             })
@@ -192,20 +129,6 @@ export default function Dashboard (props) {
         <Fragment>
             <Loader loading={loading} />
             <Container className="mt-5">
-                <Modal show={show} onHide={handleClose}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Agendamento: {item.descricao} <GrClock/></Modal.Title>
-                    </Modal.Header>
-                
-                    <Modal.Body>
-                        {renderConteudoDeModal()}
-                    </Modal.Body>
-                
-                    <Modal.Footer>
-                        <Button variant="link" onClick={()=>{handleClose()}}>Fechar</Button>
-                    </Modal.Footer>
-                </Modal>
-
                 <Modal show={showModalScheduling} onHide={handleModalSchedulingClose}>
                     <Modal.Header closeButton>
                         <Modal.Title>Agendar <GrClock/></Modal.Title>
@@ -223,14 +146,14 @@ export default function Dashboard (props) {
 
                 <Row>
                     <Col className="container-agendamento">
-                    <h3>Agendamentos: {arrayScheduling.length === 0 ? 'Nenhum agendamento' : ''}</h3>
-                        <TemplateAgendamentos arr={arrayScheduling}/>
+                        <h3>Agendamentos: {arrayScheduling.length === 0 ? 'Nenhum agendamento' : ''}</h3>
+                        <CardAgendamento arr={arrayScheduling} onClick={onClickAgendamento} removerScheduling={removerScheduling}/>
                     </Col>
 
                     <Col md="6">
                         <Calendar
-                        onChange={onChange}
-                        value={date}
+                            onChange={onChange}
+                            value={date}
                         />    
                     </Col>
                 </Row>

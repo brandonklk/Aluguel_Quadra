@@ -6,7 +6,7 @@ import logoImg from '../assets/logo.png'
 
 export default function Nav (props) {
     let history = useHistory()
-    const [user, setUser] = useState('');
+    const [user, setUser] = useState({name:''});
 
     useEffect(() => {
         ActionsUserRegistration.getUserById(props.id)
@@ -29,14 +29,15 @@ export default function Nav (props) {
             // z-index: 2;
         },
         img: {
-            'box-shadow': '0px 0px 22px white'
+            'box-shadow': '0px 0px 10px black',
+            "border": '1px solid white'
         },
         nameTitle: {
-            'font-style': 'italic',
-            'font-size': '1.5em'
+            'fontStyle': 'italic',
+            'fontSize': '1.5em'
         },
         nameUser: {
-            'margin-right': '3.5em'
+            'marginRight': '3.5em'
         }
     }
 
