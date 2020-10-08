@@ -48,6 +48,7 @@ const UserRegistration = () => {
 
             }).catch((e) => {
                 setLoading(false)
+                console.log(e)
             })
     }
 

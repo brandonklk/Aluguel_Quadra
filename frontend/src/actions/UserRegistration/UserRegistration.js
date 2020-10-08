@@ -34,7 +34,7 @@ const ActionsUserRegistration = (router) => {
                     resolve(r)
                 })
                 .catch(function (error) {
-                    reject(error)
+                    reject(error.response.data.error)
                 })
         })
     }

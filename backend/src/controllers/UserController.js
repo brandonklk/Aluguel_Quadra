@@ -27,9 +27,12 @@ module.exports = {
     async create(req, res){
         const { name, email, password,  phone } = req.body;
             const image_base_64 = req.body.image_base_64 || ''
+            const emialList = await connection('users').where({email: email})
+            if (emialList.length)
+              return res.status(404).send({error: 'Email já cadastrado'})
 
             const passwordHash = await encryptedPwd(password);
-        
+
             await connection('users').insert({
                 name,
                 email,
