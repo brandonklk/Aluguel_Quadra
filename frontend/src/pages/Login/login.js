@@ -5,7 +5,6 @@ import { useFormik } from 'formik'
 import * as Yup from 'yup'
 
 import './login.css';
-import Footer from "../../component/Footer";
 import Loader from '../../component/Loader';
 import logoImg from '../../assets/logo.png';
 
@@ -18,7 +17,6 @@ const Login = (props) => {
   const {param} = props.location
   const history = useHistory();
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
 
   const initialValues = {
     email: param && param.email || '',
@@ -47,9 +45,8 @@ const Login = (props) => {
           }
         })
 
-      }).catch((error) => {
+      }).catch((e) => {
         setLoading(false)
-        setError(error)
       })
   }
 
@@ -74,8 +71,6 @@ const Login = (props) => {
             <Col xl="6">
             <img src={logoImg} alt="Logo quadra" className="img-logo" width="150" height="150"/>
               <h1 className="title">Login</h1>
-              
-              {error && <Alert variant="danger">{error}</Alert>} 
 
               <input type="text"
                     placeholder="Email"  

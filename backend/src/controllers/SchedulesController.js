@@ -67,7 +67,7 @@ module.exports = {
         
         trx.commit()
         logger.info("Schedule successfully created");
-        return res.json({ schedules_ids: schedulesOfIds, success: 'Tennis court successfully created' });
+        return res.json({ schedules_ids: schedulesOfIds, mensagem: 'Agendamento criado com sucesso !' });
     },
 
     async deleteSchedules (req, res) {
@@ -81,6 +81,6 @@ module.exports = {
         }
   
         logger.info("Schedule successfully delete");
-        return res.status(200).send({ success: 'Tennis court successfully delete' });
+        return res.status(200).send({ mensagem: 'Agendamento excluído com sucesso' });
     }
 };

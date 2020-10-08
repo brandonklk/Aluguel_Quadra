@@ -50,7 +50,7 @@ module.exports = {
         }).returning('id').then(([id]) => idTennisCourts = id);
 
         logger.info("Tennis court successfully created");
-        return res.json({ id: idTennisCourts });
+        return res.json({ id: idTennisCourts, mensagem: 'Quadra de tênis criada com sucesso !' });
     },
 
     async update(req, res){
@@ -63,7 +63,7 @@ module.exports = {
         }
   
         logger.info("Tennis court successfully changed");
-        return res.status(200).send({ success: 'Tennis court successfully changed' });
+        return res.status(200).send({ mensagem: 'Tennis court successfully changed' });
     },
 
     async deletePerId(req, res){
@@ -76,7 +76,7 @@ module.exports = {
         }
 
         logger.info("Tennis court successfully deleted");
-        return res.status(200).send({ success: 'Tennis court successfully deleted' });
+        return res.status(200).send({ mensagem: 'Quadra de tênis apagada com sucesso !' });
     },
 
     async deletePerName(req, res){

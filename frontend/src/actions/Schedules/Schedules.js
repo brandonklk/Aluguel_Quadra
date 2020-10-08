@@ -1,6 +1,8 @@
 import Api from '../../services/api'
 import { getUser } from '../../services/auth'
+import { toast } from 'react-toastify'
 import { agruparPor, formatCurrency } from '../../helper'
+
 
 function makeName (date) {
     const weekday = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado']
@@ -36,7 +38,6 @@ const ActionsSchedules = (router) => {
                         })
                     }
 
-                    console.log('schedules', schedules)
                     resolve({schedules, data})
                 })
                 .catch(function (error) {
@@ -103,10 +104,16 @@ const ActionsSchedules = (router) => {
 
             Api.post('/create_schedules', objeto)
                 .then(function(r) {
-                    resolve(r.data)
+                    const {data} = r
+
+                    toast.success(data.mensagem)
+                    resolve(data)
                 })
-                .catch(function (error) {
-                    reject(error)
+                .catch(function (e) {
+                    const { error } = e.response.data
+                    
+                    toast.error(error)
+                    reject(e)
                 })
         })
     }
@@ -129,11 +136,16 @@ const ActionsSchedules = (router) => {
         return new Promise((resolve, reject) => {
             Api.delete(`/delete_schedule`, {params: objeto})
                 .then(function(r){
-                    console.log('r', r)
-                    resolve(r)
+                    const {data} = r
+
+                    toast.success(data.mensagem)
+                    resolve(data)
                 })
-                .catch(function (error) {
-                    reject(error)
+                .catch(function (e) {
+                    const { error } = e.response.data
+                    
+                    toast.error(error)
+                    reject(e)
                 })
         })
     }

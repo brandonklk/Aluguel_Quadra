@@ -18,7 +18,7 @@ const UserRegistration = () => {
         name: Yup.string().required('O nome é obrigatório'),
         email: Yup.string().email('Insira um e-mail válido').required('O email é obrigatório'),
         password: Yup.string().min(6, 'No mínimo 6 caracteres').required('A senha é obrigatória'),
-        password_confirm: Yup.string().oneOf([Yup.ref('password'), null], 'A senha não corresponde'),
+        password_confirm: Yup.string().oneOf([Yup.ref('password'), null], 'A senha não corresponde').required('Confirmação de senha é obrigatória'),
         phone: Yup.string().min(11, 'No mínimo 11 caracteres').required('O telefone é obrigatória')
     })
 

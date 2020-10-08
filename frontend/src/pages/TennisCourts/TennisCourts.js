@@ -143,38 +143,35 @@ export default function TennisCourts () {
                 <form onSubmit={formik.handleSubmit} className={!formik.isValid ? 'not-valid' : ''} autoComplete="off">
                     <Row>
                         <Col md="6">
-                            <InputGroup className="mt-3">
-                                <FormControl
-                                    placeholder="Nome"
-                                    name="name"
-                                    onChange={formik.handleChange}
-                                    value={formik.values.name}
+                            <input
+                                placeholder="Nome"
+                                type="text"
+                                name="name"
+                                onChange={formik.handleChange}
+                                value={formik.values.name}
                             />
-                            </InputGroup>
                             {formik.errors.name 
                                 ? <div className="feed-back-error-input">{formik.errors.name}</div>
                                 :''
                             }
                         </Col>
                         <Col md="6">
-                            <InputGroup className="mt-3">
-                                <FormControl
-                                    type="number"
-                                    placeholder="Valor"
-                                    name="value"
-                                    onChange={formik.handleChange}
-                                    value={formik.values.value}
+                            <input
+                                type="number"
+                                placeholder="Valor"
+                                name="value"
+                                onChange={formik.handleChange}
+                                value={formik.values.value}
                             />
-                            </InputGroup> 
                             {formik.errors.value
                                 ? <div className="feed-back-error-input">{formik.errors.value}</div>
                                 : ''
                             }
                         </Col>
                         <Col>
-                            <Button variant="dark" type="submit" className="mt-3 float-right">
+                            <button variant="dark" type="submit" className="mt-3 float-right">
                                 Criar
-                            </Button>
+                            </button>
                         </Col>
                     </Row>
                 </form>
