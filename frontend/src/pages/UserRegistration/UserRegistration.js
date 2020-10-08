@@ -18,6 +18,7 @@ const UserRegistration = () => {
         name: Yup.string().required('O nome é obrigatório'),
         email: Yup.string().email('Insira um e-mail válido').required('O email é obrigatório'),
         password: Yup.string().min(6, 'No mínimo 6 caracteres').required('A senha é obrigatória'),
+        password_confirm: Yup.string().oneOf([Yup.ref('password'), null], 'A senha não corresponde'),
         phone: Yup.string().min(11, 'No mínimo 11 caracteres').required('O telefone é obrigatória')
     })
 
@@ -85,7 +86,6 @@ const UserRegistration = () => {
                                 onChange={formik.handleChange}
                                 value={formik.values.name}
                             />
-            
                             {formik.touched.name && formik.errors.name 
                                 ? <div className="feed-back-error-input">{formik.errors.name}</div>
                                 :''
@@ -93,13 +93,12 @@ const UserRegistration = () => {
                         </Col>
                         <Col md="6">
                             <input
-                                    placeholder="Email"
-                                    name="email"
-                                    type="text"
-                                    onChange={formik.handleChange}
-                                    value={formik.values.email}
-                                />
-
+                                placeholder="Email"
+                                name="email"
+                                type="text"
+                                onChange={formik.handleChange}
+                                value={formik.values.email}
+                            />
                             {formik.touched.email && formik.errors.email 
                                 ? <div className="feed-back-error-input">{formik.errors.email}</div>
                                 :''
@@ -108,30 +107,41 @@ const UserRegistration = () => {
                     </Row>
                     <Row>
                         <Col md="6">
-                            {/* <InputGroup className="mt-3"> */}
-                                <input
-                                        placeholder="Senha"
-                                        name="password"
-                                        type="password"
-                                        onChange={formik.handleChange}
-                                        value={formik.values.password}
-                                    />
-                            {/* </InputGroup> */}
+                            <input
+                                placeholder="Senha"
+                                name="password"
+                                type="password"
+                                onChange={formik.handleChange}
+                                value={formik.values.password}
+                            />
                             {formik.touched.password && formik.errors.password 
                                 ? <div className="feed-back-error-input">{formik.errors.password}</div>
                                 :''
                             }
                         </Col>
                         <Col md="6">
-                            {/* <InputGroup className="mt-3"> */}
-                                <input
-                                        placeholder="Fone"
-                                        name="phone"
-                                        type="text"
-                                        onChange={formik.handleChange}
-                                        value={formik.values.phone}
-                                    />
-                            {/* </InputGroup> */}
+                            <input
+                                placeholder="Confirmar senha"
+                                name="password_confirm"
+                                type="password"
+                                onChange={formik.handleChange}
+                                value={formik.values.password_confirm}
+                            />
+                            {formik.touched.password_confirm && formik.errors.password_confirm 
+                                ? <div className="feed-back-error-input">{formik.errors.password_confirm}</div>
+                                :''
+                            }
+                        </Col>
+                    <Row>
+                    </Row>
+                        <Col md="6">
+                            <input
+                                placeholder="Fone"
+                                name="phone"
+                                type="text"
+                                onChange={formik.handleChange}
+                                value={formik.values.phone}
+                                />
                             { formik.touched.phone && formik.errors.phone 
                                 ? <div className="feed-back-error-input">{formik.errors.phone}</div>
                                 :''
