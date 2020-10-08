@@ -1,6 +1,7 @@
 import React, { Fragment , useState} from 'react'
 import { useHistory } from "react-router-dom"
-import { Container, Row, Col , InputGroup, FormControl, Button } from 'react-bootstrap'
+import { Container, Row, Col } from 'react-bootstrap'
+import { GrUndo } from 'react-icons/gr'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 
@@ -69,68 +70,68 @@ const UserRegistration = () => {
 
     return (
         <Fragment>
-            <form onSubmit={formik.handleSubmit} className={!formik.isValid ? 'not-valid' : ''}>
+            <form onSubmit={formik.handleSubmit} className={!formik.isValid ? 'not-valid' : ''} autocomplete="off">
                 <Container>
                     <Loader loading={loading}/>
+                    <p className="title">
+                        Cadastro de Usuário
+                    </p>
                     <Row>
-                        <Col md="">
-                            <InputGroup className="mt-3">
-                                <FormControl
-                                        placeholder="Nome"
-                                        name="name"
-                                        type="text"
-                                        onChange={formik.handleChange}
-                                        value={formik.values.name}
-                                    />
-                            </InputGroup>
-                            {formik.errors.name 
+                        <Col md="6">
+                            <input type="text" 
+                                placeholder="Nome"
+                                name="name"
+                                onChange={formik.handleChange}
+                                value={formik.values.name}
+                            />
+            
+                            {formik.touched.name && formik.errors.name 
                                 ? <div className="feed-back-error-input">{formik.errors.name}</div>
                                 :''
                             }
                         </Col>
-                        <Col md="">
-                            <InputGroup className="mt-3">
-                                <FormControl
-                                        placeholder="Email"
-                                        name="email"
-                                        type="text"
-                                        onChange={formik.handleChange}
-                                        value={formik.values.email}
-                                    />
-                            </InputGroup>
-                            {formik.errors.email 
+                        <Col md="6">
+                            <input
+                                    placeholder="Email"
+                                    name="email"
+                                    type="text"
+                                    onChange={formik.handleChange}
+                                    value={formik.values.email}
+                                />
+
+                            {formik.touched.email && formik.errors.email 
                                 ? <div className="feed-back-error-input">{formik.errors.email}</div>
                                 :''
                             }
                         </Col>
                     </Row>
                     <Row>
-                        <Col md="">
-                            <InputGroup className="mt-3">
-                                <FormControl
+                        <Col md="6">
+                            {/* <InputGroup className="mt-3"> */}
+                                <input
                                         placeholder="Senha"
                                         name="password"
                                         type="password"
                                         onChange={formik.handleChange}
                                         value={formik.values.password}
                                     />
-                            </InputGroup>
-                            {formik.errors.password 
+                            {/* </InputGroup> */}
+                            {formik.touched.password && formik.errors.password 
                                 ? <div className="feed-back-error-input">{formik.errors.password}</div>
                                 :''
                             }
                         </Col>
-                        <Col md="">
-                            <InputGroup className="mt-3">
-                                <FormControl
+                        <Col md="6">
+                            {/* <InputGroup className="mt-3"> */}
+                                <input
                                         placeholder="Fone"
                                         name="phone"
                                         type="text"
                                         onChange={formik.handleChange}
                                         value={formik.values.phone}
                                     />
-                            </InputGroup>
-                            {formik.errors.phone 
+                            {/* </InputGroup> */}
+                            { formik.touched.phone && formik.errors.phone 
                                 ? <div className="feed-back-error-input">{formik.errors.phone}</div>
                                 :''
                             }
@@ -138,13 +139,18 @@ const UserRegistration = () => {
                     </Row>
 
                     <InputImage callbackSetBase64={callbackSetBase64}/>
-
                     <Row>
-                        <Button variant="dark" type="submit" className="mt-3 mr-3 ml-3 float-right">
-                            Criar conta
-                        </Button>
+                        <Col sm="6" md="6">
+                            <button type="submit" variant="dark">
+                                Criar conta
+                            </button>
+                        </Col>
+                        <Col sm="6" md="6">
+                            <button type="button" variant="link" className="float-right" onClick={()=>{history.goBack()}}>
+                                <GrUndo/>Voltar
+                            </button>
+                        </Col>
                     </Row>
-
                 </Container>
             </form>
         </Fragment>
