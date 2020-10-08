@@ -22,7 +22,7 @@ export default function Nav (props) {
 
     const style = {
         navStyle: {
-            'background': '#9ccc65',
+            'background': 'var(--primary)',
             // position: fixed;
             // width: 100vw;
             // top: 0;
