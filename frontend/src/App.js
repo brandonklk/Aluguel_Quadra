@@ -1,9 +1,11 @@
-import React, { Fragment } from 'react';
+import React, {Fragment} from 'react';
+import Routes from './routes';
+import {toast} from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import './global.css'
-import  Footer from './component/Footer'
 import 'bootstrap/dist/css/bootstrap.min.css'; 
 
-import Routes from './routes';
+toast.configure()
 function App() {
   
   return (

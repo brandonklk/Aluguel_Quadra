@@ -28,8 +28,9 @@ module.exports = {
         const { name, email, password,  phone } = req.body;
             const image_base_64 = req.body.image_base_64 || ''
             const emialList = await connection('users').where({email: email})
+
             if (emialList.length)
-              return res.status(404).send({error: 'Email já cadastrado'})
+              return res.status(400).send({error: 'Email já cadastrado'})
 
             const passwordHash = await encryptedPwd(password);
 
@@ -41,7 +42,7 @@ module.exports = {
                 image_base_64
             })
             logger.info("User create success");
-            return res.json({ email });
+            return res.json({ email, mensagem: 'Registro criado com sucessos !' });
 
     },
 
@@ -81,7 +82,7 @@ module.exports = {
         }
 
         logger.info("User authenticate success")
-        return res.json({ user });
+        return res.json({ user, mensagem: 'User authenticate success' });
         
     },
 

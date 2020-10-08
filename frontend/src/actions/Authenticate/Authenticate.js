@@ -1,5 +1,6 @@
 
 import Api from '../../services/api'
+import { toast } from 'react-toastify'
 
 const ActionsAuthenticate = (router) => {
     
@@ -8,10 +9,17 @@ const ActionsAuthenticate = (router) => {
 
             Api.post(`/authenticate`, User)
                 .then(function(r){
+                    const { mensagem } = r.data
+                    toast('Seja bem vindo !')
+                    toast.success(mensagem)
+
                     resolve(r.data)
                 })
-                .catch(function (error) {
-                    reject(error.response.data.error)
+                .catch(function (e) {
+                    const { error } = e.response.data
+                    
+                    toast.error(error)
+                    reject(e)
                 })
         })
     }

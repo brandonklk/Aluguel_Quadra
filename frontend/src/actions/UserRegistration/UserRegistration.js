@@ -1,6 +1,7 @@
 import Api from '../../services/api'
+import { toast } from 'react-toastify'
+
 const ActionsUserRegistration = (router) => {
-    
     function getUsers () {
         return new Promise((resolve, reject) => {
 
@@ -30,11 +31,15 @@ const ActionsUserRegistration = (router) => {
     function createUser (User) {
         return new Promise((resolve, reject) => {
             Api.post(`/${'create_users'}`, User)
-                .then(function(r){
+                .then((r) => {
+                    const {mensagem} = r.data
+                    toast.success(mensagem)
                     resolve(r)
                 })
-                .catch(function (error) {
-                    reject(error.response.data.error)
+                .catch((e) => {
+                    const error = e.response.data.error
+                    toast.error(error)
+                    reject(e)
                 })
         })
     }

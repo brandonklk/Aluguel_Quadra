@@ -1,5 +1,6 @@
 import Api from '../../services/api'
 import { getUser } from '../../services/auth'
+import { toast } from 'react-toastify'
 
 const ActionsTennisCourts = (router) => {
 
@@ -46,10 +47,16 @@ const ActionsTennisCourts = (router) => {
             object.owner_id = user.id
             Api.post('/create_tennis_courts', object)
                 .then(function(r) {
-                    resolve(r.data)
+                    const {data} = r
+
+                    toast.success(data.mensagem)
+                    resolve(data)
                 })
-                .catch(function (error) {
-                    reject(error)
+                .catch(function (e) {
+                    const { error } = e.response.data
+                    
+                    toast.error(error)
+                    reject(e)
                 })
         })
     }
@@ -60,10 +67,16 @@ const ActionsTennisCourts = (router) => {
             object.owner_id = user.id
             Api.put('/update_tennis_courts', object)
                 .then(function(r){
-                    resolve(r)
+                    const {data} = r
+                    
+                    toast.success(data.mensagem)
+                    resolve(data)
                 })
-                .catch(function (error) {
-                    reject(error)
+                .catch(function (e) {
+                    const { error } = e.response.data
+                    
+                    toast.error(error)
+                    reject(e)
                 })
         })
     }
@@ -71,11 +84,17 @@ const ActionsTennisCourts = (router) => {
     function remove (id) {
         return new Promise((resolve, reject) => {
             Api.get(`/delete_tennis_courts/id/${id}`)
-                .then(function(r){
-                    resolve(r)
+                .then(function(r) {
+                    const {data} = r
+                    
+                    toast.success(data.mensagem)
+                    resolve(data)
                 })
-                .catch(function (error) {
-                    reject(error)
+                .catch(function (e) {
+                    const { error } = e.response.data
+                    
+                    toast.error(error)
+                    reject(e)
                 })
         })
     }

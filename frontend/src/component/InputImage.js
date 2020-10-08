@@ -1,5 +1,6 @@
 import React from 'react'
 import { GrCloudUpload } from 'react-icons/gr'
+
 let callbackSetBase64 = () => {}
 
 const style = {
@@ -54,8 +55,8 @@ const handlerClick = () => {
             }
             
             image.src = base64
+            image.width = 350
             document.getElementById("imgTest").innerHTML = image.outerHTML
-            // callback(base64)
         }
         
         reader.readAsDataURL(file)
