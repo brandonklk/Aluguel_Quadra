@@ -119,7 +119,7 @@ module.exports = {
       }
 
       logger.info("Password user changed success");
-      return res.status(200).send({ success: 'Token successfully generated' });
+      return res.status(200).send({ mensagem: 'Token gerado com sucesso !' });
   },
 
   async resetPassword(req, res){

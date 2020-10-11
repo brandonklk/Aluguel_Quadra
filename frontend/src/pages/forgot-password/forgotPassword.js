@@ -1,178 +1,146 @@
-import React, { Component, Fragment } from 'react';
-import { Container, Row, Col, InputGroup, FormControl, Button } from 'react-bootstrap';
-import Loader from '../../component/Loader'
-import './forgotPassword.css';
+import React, { Fragment, useState } from 'react';
+import { useHistory } from "react-router-dom"
+import { Container, Row, Col } from 'react-bootstrap';
+import { GrUndo } from 'react-icons/gr'
+import { useFormik } from 'formik'
+import * as Yup from 'yup'
 
+import Loader from '../../component/Loader'
 import Actions from "../../actions/Authenticate/Authenticate"
 
-class forgotPassword extends Component {
-  stateInitial = {
-    title: 'Esqueceu senha',
-    loading: false,
-    tokenIsValid: false,
-    form: {
-      email: '',
-      token: '',
-      password: '',
-      passwordConfirm: ''
+import './forgotPassword.css';
+
+const ForgotPassword = () => {
+  const history = useHistory();
+
+  const [loading, setLoading] = useState(false);
+  const [tokenIsValid, setTokenIsValid] = useState(false);
+
+  const initialValues = {
+    email: '',
+    token : '',
+    password : '',
+  }
+
+  const validationSchema = Yup.object({
+    email: Yup.string().email('Insira um e-mail válido').required('O email é obrigatório'),
+    tokenIsValid: Yup.boolean(),
+    token: Yup.string().when("tokenIsValid", {is: true, then: Yup.string().required('Token é obrigatório')}),
+    password: Yup.string().when("tokenIsValid", {is: true, then: Yup.string().required('Nova senha é obrigatório')})
+  })
+
+  const onSubmit = values => {
+    
+    if (tokenIsValid) {
+      submitNewPassword(values)
+      return
     }
-  }
-
-  state = this.stateInitial
-
-  clearState = () => {
-    this.setState(this.stateInitial)
-  }
-  
-  setEmail = (event) => {
-    const {value} = event.target
     
-    this.setState({ form: Object.assign(this.state.form ,{email: value})})
-  }
+    setLoading(true)
+    const {email} = values
 
-  setToken = (event) => {
-    const {value} = event.target
-    this.setState({form: Object.assign(this.state.form ,{token: value})})
+    Actions.requestForgotPassword({email})
+      .then((r) => {
+        setLoading(false)
+        setTokenIsValid(true)
+        formik.values.tokenIsValid = true
 
-  }
-
-  setNewPassword = (event) => {
-    const {value} = event.target
-    this.setState({form: Object.assign(this.state.form ,{password: value})})
-
-  }
-
-  setNewPasswordConfirm = (event) => {
-    const {value} = event.target
-    this.setState({form: Object.assign(this.state.form ,{passwordConfirm: value})})
-
-  }
-
-  submitToken = (event) => {
-    this.setState({loading: true})
-    
-    Actions.requestForgotPassword({email: this.state.form.email})
-    .then((r) => {
-      this.setState({
-        loading: false,
-        tokenIsValid: true
+      }).catch((e) => {
+        setLoading(false)
       })
-    })
-    .catch((error) => {
-      this.setState({loading: false})
-    })
+
   }
 
-  submitNewPassword = () => {
-    this.setState({loading: true})
+  const formik = useFormik({
+    initialValues,
+    onSubmit,
+    validationSchema
+  });
+  
+  const back = () => {
+    history.goBack()
+  }
+
+  const submitNewPassword = (values) => {
+    setLoading(true)
     Actions.resetPasswordUser({
-      email: this.state.form.email,
-      token : this.state.form.token,
-      password : this.state.form.passwordConfirm,
+      email: values.email,
+      token: values.token,
+      password: values.password
     })
       .then((r) => {
-        this.setState({loading: false})
-        this.props.history.push({
+        setLoading(false)
+        history.push({
           pathname: '/',
           param: {
-              email: this.state.form.email
+            email: values.email
           }
         })
       })
-      .catch((error) => {
-        this.setState({loading: false})
-
-      })
+      .catch(setLoading(false))
   }
 
-  back = () => {
-    // this.clearState()
-    this.props.history.goBack()
-  }
+  return (
+    <Fragment>
+      <form onSubmit={formik.handleSubmit} className={!formik.isValid ? 'not-valid' : ''} autocomplete="off">
+        <Container>
+            <Loader loading={loading}/>
+            <p className="title">
+              {tokenIsValid ? 'Nova senha' : 'Esqueceu senha ?'}
+            </p>
+            <p>{tokenIsValid ? 'Digite a nova senha !' : 'Digite um email válido para envio do token !'}</p>
+            <Row>
+              <Col md="12">
+                {
+                  tokenIsValid ? 
+                  <Fragment>
+                    <input type="text" 
+                      placeholder="Token"
+                      name="token"
+                      onChange={formik.handleChange}
+                      value={formik.values.token}
+                    />
+                    {formik.touched.token && formik.errors.token 
+                      ? <div className="feed-back-error-input">{formik.errors.token}</div>
+                      :''
+                    }
+                    <input type="text" 
+                      placeholder="Nova senha"
+                      type="password"
+                      name="password"
+                      onChange={formik.handleChange}
+                      value={formik.values.password}
+                    />
+                    {formik.touched.password && formik.errors.password 
+                      ? <div className="feed-back-error-input">{formik.errors.password}</div>
+                      :''
+                    }
+                  </Fragment> :
+                  <Fragment>
+                    <input type="text" 
+                      placeholder="Email"
+                      name="email"
+                      onChange={formik.handleChange}
+                      value={formik.values.email}
+                    />
+                    {formik.touched.email && formik.errors.email 
+                      ? <div className="feed-back-error-input">{formik.errors.email}</div>
+                      :''
+                    }
+                  </Fragment>}
 
-  render () {
-    const tokenIsValid = this.state.tokenIsValid
-    
-    let template = 
-    <Row>
-      <Col>
-        <label>Email para envio o token!</label>
-        <InputGroup className="mb-3">
-          <FormControl
-            placeholder="Email"
-            aria-label="Email"
-            aria-describedby="basic-addon1"
-            value={this.state.form.email}
-            onChange={this.setEmail}
-          />
-        </InputGroup>
-        <Button variant="dark" type="button" onClick={this.submitToken}>
-          Enviar
-        </Button>
-        
-        <Button variant="link" type="button" className="" onClick={this.back}>
-          Voltar
-        </Button>
-      </Col>
-    </Row>
-    
-    if (tokenIsValid) {
-      template = 
-      <Row>
-        <InputGroup className="mb-3">
-          <FormControl
-            placeholder="Token"
-            aria-label="Toke"
-            aria-describedby="basic-token"
-            value={this.state.form.token}
-            onChange={this.setToken}
-          />
-        </InputGroup>
-
-        <InputGroup className="mb-3">
-          <FormControl
-                    placeholder="Nova senha"
-                    aria-label="Nova senha"
-                    aria-describedby="basic-addon1"
-                    type="password"
-                    value={this.state.form.password}
-                    onChange={this.setNewPassword}
-                  />
-        </InputGroup>
-  
-        <InputGroup className="mb-3">
-          <FormControl
-            placeholder="Confirmar nova senha"
-            aria-label="Confirmar nova senha"
-            aria-describedby="basic-addon1"
-            type="password" 
-            value={this.state.form.passwordConfirm}
-            onChange={this.setNewPasswordConfirm}
-          />
-        </InputGroup>
-
-        <Button variant="dark" type="button" onClick={this.submitNewPassword}>
-          Trocar senha
-        </Button>
-
-
-        <Button variant="link" type="button" className="mt-3 mr-3 ml-3 float-right" onClick={() => {this.setState({tokenIsValid: false})}}>
-          Cancelar
-        </Button>
-      </Row>
-    }
-
-    return (
-      // <Table head={ this.state.head } body={ this.state.body } FuncDelete={this.delete} FuncEdit={this.edit} />
-      <Fragment>
-        <Loader loading={this.state.loading}/>
-        <Container className="forgotPassword">
-          <h1 class="title">{this.state.title}</h1>
-          {template}
+                  <button type="submit" variant="dark" className="mt-2">
+                    Enviar token
+                  </button>
+                  <button type="button" variant="link"  className="float-right mt-2" onClick={back}>
+                    <GrUndo/> Voltar
+                  </button>
+              </Col>
+            </Row>
+            
         </Container>
-      </Fragment>
-    );
-  }
+      </form>
+    </Fragment>
+  )
 }
-
-export default forgotPassword
+export default ForgotPassword

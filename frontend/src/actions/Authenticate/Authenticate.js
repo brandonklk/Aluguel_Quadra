@@ -28,10 +28,16 @@ const ActionsAuthenticate = (router) => {
         return new Promise((resolve, reject) => {
             Api.post('/request_forgot_password', params)
                 .then((r) => {
-                    resolve(r.data)
+                    const {data} = r 
+
+                    toast(data.mensagem)
+                    resolve(data)
                 })
-                .catch((error) => {
-                    reject(error)
+                .catch((e) => {
+                    const { error } = e.response.data
+                    
+                    toast.error(error)
+                    reject(e)
                 })
         })
     }

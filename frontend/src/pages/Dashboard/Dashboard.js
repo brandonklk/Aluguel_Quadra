@@ -1,5 +1,6 @@
 import React, {useState, useEffect, Fragment} from 'react'
-import { Col, Container, Row, Modal, Button, ButtonGroup, Card  } from 'react-bootstrap'
+import { Col, Container, Row, Modal, Button } from 'react-bootstrap'
+import { formatDate } from '../../helper'
 import { GrClock } from "react-icons/gr";
 
 import Calendar  from 'react-calendar'
@@ -28,7 +29,6 @@ export default function Dashboard (props) {
     const handleModalSchedulingClose = () => setShowModalScheduling(false);
     const handleModalSchedulingShow = () => setShowModalScheduling(true);
 
-    const [item, setItem] = useState({});
     const [date, setDate] = useState(new Date());
     
     let [arrayScheduling, setScheduling] = useState([]);
@@ -36,15 +36,10 @@ export default function Dashboard (props) {
 
     const onChange = date => {
         setDate(date)
-      
-        const d = date.getDate() < 10 ? `0${date.getDate()*1}`: date.getDate()*1
-        const m = date.getMonth() < 10 ? `0${date.getMonth()+1}`: date.getMonth()+1
-        const y = date.getFullYear()
-        const date_filter = `${d}/${m}/${y}`
-      
+
         filter({setCopyScheduling:setCopyScheduling, 
             filter: {
-                date: date_filter
+                date: formatDate(date)
             } , 
             callBack: () => { handleModalSchedulingShow()}})
     }
@@ -69,14 +64,9 @@ export default function Dashboard (props) {
     }, []);
 
     const saveOnScheduling = () => {
-        const d = date.getDate() < 10 ? `0${date.getDate()*1}`: date.getDate()*1
-        const m = date.getMonth()+1 < 10 ? `0${date.getMonth()+1}`: date.getMonth()+1
-        const y = date.getFullYear()
-
-        
         setLoading(true)
         ActionsSchedules.create({
-            date: `${d}/${m}/${y}`,
+            date: formatDate(date),
             time: array,
             tennis_court_id: quadra.id,
             user_id: undefined,

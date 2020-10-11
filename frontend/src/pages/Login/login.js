@@ -63,7 +63,7 @@ const Login = (props) => {
   return (
     <Fragment>
 
-      <form onSubmit={formik.handleSubmit} className={!formik.isValid ? 'not-valid' : ''} autocomplete="off">
+      <form onSubmit={formik.handleSubmit} className={!formik.isValid ? 'not-valid' : ''} autoComplete="off">
         <Loader loading={loading}/>
         <Container>
           <Alert/>
