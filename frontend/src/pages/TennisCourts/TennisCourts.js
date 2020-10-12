@@ -9,6 +9,8 @@ import Table from '../../component/Table'
 import Actions from '../../actions/TennisCourts/TennisCourts'
 import './TennisCourts.css'
 
+import {makeArrayHours} from '../../component/Checklist'
+
 export default function TennisCourts () {
     const [loading, setLoading] = useState('');
     const [list, setList] = useState([]);
@@ -20,14 +22,14 @@ export default function TennisCourts () {
 
     const validationSchema = Yup.object({
         name: Yup.string().required('O nome é obrigatório'),
-        value: Yup.number().required('O valor é obrigatório')
+        value: Yup.number().required('O valor é obrigatório'),
+        horario_inicio: Yup.string().required('Selecione o horário inicial'),
+        horario_final: Yup.string().required('Selecione o horário final'),
     })
 
     const create = (values, { resetForm }) => {
-        const {name, value} = values
-
         setLoading(true)
-        Actions.create({name, value})
+        Actions.create(values)
             .then((r) => {
                 setLoading(false)
                 if (r.id) 
@@ -85,19 +87,32 @@ export default function TennisCourts () {
     }
 
     const edit = () => {
-        const {id, name, value} = item
-
         setLoading(true)
-        Actions.edit({
-                id,
-                name,
-                value
-            }).then((r)=>{
+        Actions.edit(item)
+            .then((r)=>{
                 setLoading(false)
                 handleModalEditClose()                
                 getList()
             })
             .catch((r)=>{console.log(r)})
+    }
+
+    const renderOptionsHorario = (id) => {
+        const horario_inicio = "07:00"
+        const horario_fim = "22:00"
+        let arr = makeArrayHours(horario_inicio, horario_fim)
+
+        return (
+            <Fragment>
+                {
+                    arr.map((item) => {
+                        return (
+                            <option key={`${id}-${item.value}`} value={item.value}>{item.value}</option>
+                        )
+                    })
+                }
+            </Fragment>
+        )
     }
     
     return (
@@ -110,23 +125,39 @@ export default function TennisCourts () {
                     </Modal.Header>
                 
                     <Modal.Body>
-                        <InputGroup className="mt-3">
-                                <FormControl
-                                    placeholder="Nome"
-                                    aria-label="Nome"
-                                    aria-describedby="name"
-                                    value={item.name}
-                                    onChange={(e) => {setItem({...item, name: e.target.value})}}
-                                />
-                            </InputGroup> 
-                            <InputGroup className="mt-3">
-                                <FormControl
-                                    placeholder="Valor"
-                                    name="valor"
-                                    value={item.value}
-                                    onChange={(e) => {setItem({...item, value: e.target.value})}}
-                                />
-                            </InputGroup> 
+                        <form>
+                            <input placeholder="Nome"
+                                type="text"
+                                name="name"
+                                value={item.name}
+                                onChange={(e) => {setItem({...item, name: e.target.value})}}/>
+
+                            <input
+                                type="number"
+                                placeholder="Valor"
+                                name="value"
+                                value={item.value}
+                                onChange={(e) => {setItem({...item, value: e.target.value})}}
+                            />
+
+                            <label>Horário inicial</label>
+                            <select id="horario_inicio" 
+                                    name="horario_inicio"
+                                    value={item.horario_inicio}
+                                    onChange={(e) => {setItem({...item, horario_inicio: e.target.value})}}
+                                    >
+                                {renderOptionsHorario('horario_inicio_modal')}
+                            </select>
+
+                            <label>Horário final</label>
+                            <select id="horario_final" 
+                                    name="horario_final" 
+                                    value={item.horario_final}
+                                    onChange={(e) => {setItem({...item, horario_final: e.target.value})}}
+                                    >
+                                {renderOptionsHorario('horario_final_modal')}
+                            </select>
+                        </form>
                     </Modal.Body>
                 
                     <Modal.Footer>
@@ -138,7 +169,7 @@ export default function TennisCourts () {
             <Container className="mt-5">
                 <h1 className="title">Cadastro de Quadra</h1>
                 <Row>
-                    <Table head={['Id','Nome','Valor hora']} body={list} FuncDelete={FuncDelete} FuncEdit={FuncEdit}/>
+                    <Table head={['Id','Nome','Valor hora', 'Horário inicial', 'Horário final']} body={list} FuncDelete={FuncDelete} FuncEdit={FuncEdit}/>
                 </Row>
                 <form onSubmit={formik.handleSubmit} className={!formik.isValid ? 'not-valid' : ''} autoComplete="off">
                     <Row>
@@ -165,6 +196,32 @@ export default function TennisCourts () {
                             />
                             {formik.errors.value
                                 ? <div className="feed-back-error-input">{formik.errors.value}</div>
+                                : ''
+                            }
+                        </Col>
+                        <Col md="6">
+                            <label>Horário inicial</label>
+                            <select id="horario_inicio" 
+                                    name="horario_inicio"
+                                    onChange={formik.handleChange}
+                                    value={formik.values.horario_inicio}>
+                                {renderOptionsHorario('horario_inicio')}
+                            </select>
+                            {formik.errors.horario_inicio
+                                ? <div className="feed-back-error-input">{formik.errors.horario_inicio}</div>
+                                : ''
+                            }
+                        </Col>
+                        <Col md="6">
+                            <label>Horário final</label>
+                            <select id="horario_final" 
+                                    name="horario_final" 
+                                    onChange={formik.handleChange}
+                                    value={formik.values.horario_final}>
+                                {renderOptionsHorario('horario_final')}
+                            </select>
+                            {formik.errors.horario_final
+                                ? <div className="feed-back-error-input">{formik.errors.horario_final}</div>
                                 : ''
                             }
                         </Col>

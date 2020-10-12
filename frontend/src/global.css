@@ -11,6 +11,7 @@ body {
     font: 400 14px Roboto, sans-serif;
     background: #f0f0f5 !important;
     -webkit-font-smoothing: antialiased;
+
     /* Color */
     --primary: #9ccc65;
     --primary-ligth: #cfff95;
@@ -69,6 +70,27 @@ form input[type="text"]:hover,
 form input[type="password"]:hover,
 form input[type="number"]:hover {
     border-bottom: .2px solid var(--secondary-dark);
+}
+
+form select,
+form option {
+    background: none;
+    border: none;
+    border-radius: 0px;
+    border-bottom: 2px solid var(--secondary-dark);
+    width: 100%;
+    /* padding: 1em; */
+    /* margin-top: 1em; */
+}
+
+form select:hover {
+    border-bottom: .2px solid var(--secondary-dark);
+}
+
+form label {
+    font-size: 14px;
+    color: gray;
+    margin-bottom: 0px;
 }
 
 form button {
