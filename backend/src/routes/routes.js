@@ -63,7 +63,9 @@ router.post('/create_tennis_courts', celebrate({
     [Segments.BODY]: Joi.object().keys({
         name: Joi.string().required().trim(),
         owner_id: Joi.number().required(),
-        value: Joi.number().required()
+        value: Joi.number().required(),
+        horario_inicio: Joi.string().required(),
+        horario_final: Joi.string().required()
     })
 }), TennisCourtsController.create);
 
@@ -72,7 +74,9 @@ router.put('/update_tennis_courts', celebrate({
         id: Joi.number().required(),
         name: Joi.string().required().trim(),
         value: Joi.number().required(),
-        owner_id: Joi.number().required()
+        owner_id: Joi.number().required(),
+        horario_inicio: Joi.string().required(),
+        horario_final: Joi.string().required()
     })
 }), TennisCourtsController.update);
 
