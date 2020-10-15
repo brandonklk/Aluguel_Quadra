@@ -1,5 +1,5 @@
 import React, {useState, useEffect, Fragment} from 'react'
-import { Col, Container, Row, Modal, Button } from 'react-bootstrap'
+import { Col, Container, Row, Modal, Button, Dropdown } from 'react-bootstrap'
 import { formatDate } from '../../helper'
 import { GrClock } from "react-icons/gr";
 
@@ -115,6 +115,22 @@ export default function Dashboard (props) {
             .catch((error) => {console.log(error)})
     }
 
+    const applyFilterInAllScheduling = () => {
+        setLoading(true)
+        ActionsSchedules.getAll().then((r) => {
+            setScheduling(r.schedules)
+            setLoading(false)
+        })
+    }
+
+    const applyFilterInCurrentDate = () => {
+        setLoading(true)
+        ActionsSchedules.getAll({ date: formatDate(date) }).then((r) => {
+            setScheduling(r.schedules)
+            setLoading(false)
+        })
+    }
+
     return (
         <Fragment>
             <Loader loading={loading} />
@@ -137,6 +153,18 @@ export default function Dashboard (props) {
                 <Row>
                     <Col className="container-agendamento">
                         <h3>Agendamentos: {arrayScheduling.length === 0 ? 'Nenhum agendamento' : ''}</h3>
+
+                        <Dropdown>
+                            <Dropdown.Toggle variant="link">
+                                Filtros
+                            </Dropdown.Toggle>
+
+                            <Dropdown.Menu>
+                                <Dropdown.Item onClick={() => applyFilterInAllScheduling()} eventKey="1">Todas as datas</Dropdown.Item>
+                                <Dropdown.Item onClick={() => applyFilterInCurrentDate()} eventKey="2">Data atual</Dropdown.Item>
+                            </Dropdown.Menu>
+                        </Dropdown>
+
                         <CardAgendamento arr={arrayScheduling} onClick={onClickAgendamento} removerScheduling={removerScheduling}/>
                     </Col>
 

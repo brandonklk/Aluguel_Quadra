@@ -127,7 +127,6 @@ button.full{
 }
 
 button:hover{
-    position: relative;
     top:2px;
     box-shadow: none;
 }
