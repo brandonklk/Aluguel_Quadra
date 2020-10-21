@@ -1,9 +1,9 @@
 import React, {useState, useEffect, Fragment} from 'react'
-import { useHistory } from "react-router-dom"
+import { useHistory, Link } from "react-router-dom"
 import { Image, Navbar, NavDropdown } from 'react-bootstrap'
 import ActionsUserRegistration from '../actions/UserRegistration/UserRegistration'
 import logoImg from '../assets/logo.png'
-import { GrLogout, GrUserSettings } from "react-icons/gr";
+import { GrLogout, GrUserSettings, GrEdit } from "react-icons/gr";
 
 export default function Nav (props) {
     let history = useHistory()
@@ -20,11 +20,11 @@ export default function Nav (props) {
         props.logout() 
         history.push("/");
     }
-
+    
     const editionUser = () => {
         history.push("/UserEdition");
     }
-
+    
     const style = {
         navStyle: {
             'background': 'var(--primary)',
@@ -70,7 +70,10 @@ export default function Nav (props) {
                 }                
                 
                 <NavDropdown title={user.name} style={style.nameUser} id="collasible-nav-dropdown">
-                    <NavDropdown.Item onClick={editionUser}>Editar perfil <GrUserSettings/></NavDropdown.Item>
+                    <NavDropdown.Item onClick={()=>{editionUser}}>Editar perfil <GrUserSettings/></NavDropdown.Item>
+                    {user.permission == 1 && <NavDropdown.Item>
+                            <Link to="/TennisCourts">Registrar Quadra <GrEdit/></Link>
+                        </NavDropdown.Item>}
                     <NavDropdown.Item onClick={logoutUser}>Sair <GrLogout/></NavDropdown.Item>
                 </NavDropdown>
             </Navbar.Collapse>

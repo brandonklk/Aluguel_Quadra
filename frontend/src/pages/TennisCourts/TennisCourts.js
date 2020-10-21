@@ -1,5 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react'
-import { Container, Row, Col, InputGroup, FormControl, Button, Modal } from 'react-bootstrap'
+import { useHistory } from "react-router-dom"
+import { Container, Row, Col, Button, Modal } from 'react-bootstrap'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 
@@ -7,6 +8,7 @@ import Loader from '../../component/Loader'
 import Table from '../../component/Table'
 
 import Actions from '../../actions/TennisCourts/TennisCourts'
+import ActionsUserRegistration from '../../actions/UserRegistration/UserRegistration'
 import './TennisCourts.css'
 
 import {makeArrayHours} from '../../component/Checklist'
@@ -15,6 +17,8 @@ export default function TennisCourts () {
     const [loading, setLoading] = useState('');
     const [list, setList] = useState([]);
     const [item, setItem] = useState({});
+    const [user, setUser] = useState({name:''});
+    const history = useHistory()
 
     const [showModalEdit, setShowModalEdit ] = useState(false)
     const handleModalEditClose = () => setShowModalEdit(false);
@@ -26,6 +30,13 @@ export default function TennisCourts () {
         horario_inicio: Yup.string().required('Selecione o horário inicial'),
         horario_final: Yup.string().required('Selecione o horário final'),
     })
+
+    useEffect(() => {
+        ActionsUserRegistration.getUserById()
+        .then((r) => {
+            setUser(r)
+        })
+    }, []);
 
     const create = (values, { resetForm }) => {
         setLoading(true)
@@ -165,7 +176,7 @@ export default function TennisCourts () {
                         <Button variant="link" onClick={()=>{handleModalEditClose()}}>Fechar</Button>
                     </Modal.Footer>
             </Modal>
-
+            {user.permission == 1 ?
             <Container className="mt-5">
                 <h1 className="title">Cadastro de Quadra</h1>
                 <Row>
@@ -233,6 +244,7 @@ export default function TennisCourts () {
                     </Row>
                 </form>
             </Container>
+            : history.push('/Dashboard')}
         </Fragment>
     );
 }
