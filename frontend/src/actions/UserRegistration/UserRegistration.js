@@ -44,8 +44,10 @@ const ActionsUserRegistration = (router) => {
         })
     }
 
-    function editUser () {
-
+    async function editUser (user) {
+        let res = await Api.put(`/${'update_user'}`, user);
+        let { message } = res.data;
+        toast.success(message);
     }
 
     function deleteUser () {

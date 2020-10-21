@@ -21,6 +21,10 @@ export default function Nav (props) {
         history.push("/");
     }
     
+    const editionUser = () => {
+        history.push("/UserEdition");
+    }
+    
     const style = {
         navStyle: {
             'background': 'var(--primary)',
@@ -66,7 +70,7 @@ export default function Nav (props) {
                 }                
                 
                 <NavDropdown title={user.name} style={style.nameUser} id="collasible-nav-dropdown">
-                    <NavDropdown.Item onClick={()=>{}}>Editar perfil <GrUserSettings/></NavDropdown.Item>
+                    <NavDropdown.Item onClick={()=>{editionUser}}>Editar perfil <GrUserSettings/></NavDropdown.Item>
                     {user.permission == 1 && <NavDropdown.Item>
                             <Link to="/TennisCourts">Registrar Quadra <GrEdit/></Link>
                         </NavDropdown.Item>}
