@@ -5,7 +5,7 @@ let callbackSetBase64 = () => {}
 
 const style = {
     root: {
-        'margin-top': '1em',
+        'marginTop': '1em',
     },
     input: {
         'display': 'none'
@@ -15,11 +15,11 @@ const style = {
         'height': 'fit-content',
         'background': '#F0f0f5',
         'padding': '1em',
-        'margin-top': '1em',
+        'marginTop': '1em',
         'cursor': 'pointer'
     },
     image_teste: {
-        'margin-top': '1em'
+        'marginTop': '1em'
     }
     
 }

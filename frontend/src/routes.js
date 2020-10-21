@@ -8,6 +8,7 @@ import UserRegistration from './pages/UserRegistration/UserRegistration'
 import ForgotPassword from './pages/forgot-password/forgotPassword';
 import Dashboard from './pages/Dashboard/Dashboard'
 import TennisCourts from './pages/TennisCourts/TennisCourts'
+import UserEdition from './pages/UserEdition/UserEdition'
 //ImportRouter
 
 const PrivateRouter = ({ component: Component, ...rest}) => (
@@ -35,8 +36,9 @@ const Routes = () => (
             <Route path="/forgot-password" component={ForgotPassword} />
             <PrivateRouter path="/Dashboard" component={Dashboard}/>
             <PrivateRouter path="/TennisCourts" component={TennisCourts} />
+            <PrivateRouter path="/UserEdition" component={UserEdition} />
 				RouterGeneric
-            </Switch>
+        </Switch>
     </BrowserRouter>
 )
 

@@ -45,6 +45,16 @@ router.put('/reset_password_user', celebrate({
     })
 }), UserController.resetPassword);
 
+router.put('/update_user', celebrate({
+    [Segments.BODY]: Joi.object().keys({
+        name: Joi.string().required(),
+        email: Joi.string().required().email().trim(),
+        password: Joi.string().required().min(6).max(12),
+        phone: Joi.string().required().min(11).max(15).trim(),
+        image_base_64: Joi.string()
+    })
+}), UserController.updateDataUser);
+
 router.get('/tennis_courts', TennisCourtsController.getAll);
 
 router.get('/tennis_courts/id/:id', celebrate({
