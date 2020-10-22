@@ -96,6 +96,8 @@ export default function UserEdition() {
                 placeholder="Email"
                 name="email"
                 type="text"
+                disabled
+                readOnly
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.email}
