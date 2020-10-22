@@ -32,7 +32,7 @@ export default function UserEdition() {
       try {
         setLoading(true);
         await ActionsUserEdition.editUser({
-          name, email, password, phone
+          id, name, email, password, phone
         });
         setLoading(false);
       } catch (error) {

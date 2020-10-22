@@ -1,5 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import { useHistory } from "react-router-dom"
+import { GrRevert } from "react-icons/gr";
 import { Container, Row, Col, Button, Modal } from 'react-bootstrap'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
@@ -9,6 +10,7 @@ import Table from '../../component/Table'
 
 import Actions from '../../actions/TennisCourts/TennisCourts'
 import ActionsUserRegistration from '../../actions/UserRegistration/UserRegistration'
+import { getIdOfUser } from '../../helper/UserUtilis';
 import './TennisCourts.css'
 
 import {makeArrayHours} from '../../component/Checklist'
@@ -32,7 +34,7 @@ export default function TennisCourts () {
     })
 
     useEffect(() => {
-        ActionsUserRegistration.getUserById()
+        ActionsUserRegistration.getUserById(parseInt(getIdOfUser()))
         .then((r) => {
             setUser(r)
         })
@@ -127,9 +129,11 @@ export default function TennisCourts () {
     }
     
     return (
+        
         <Fragment>
+            
             <Loader loading={loading} />
-
+            
             <Modal show={showModalEdit} onHide={handleModalEditClose}>
                     <Modal.Header closeButton>
                         <Modal.Title>Editar</Modal.Title>
@@ -176,7 +180,7 @@ export default function TennisCourts () {
                         <Button variant="link" onClick={()=>{handleModalEditClose()}}>Fechar</Button>
                     </Modal.Footer>
             </Modal>
-            {user.permission == 1 ?
+            {user.permission === 1 ?
             <Container className="mt-5">
                 <h1 className="title">Cadastro de Quadra</h1>
                 <Row>
@@ -244,7 +248,9 @@ export default function TennisCourts () {
                     </Row>
                 </form>
             </Container>
-            : history.push('/Dashboard')}
+            : <h1 className="text-center">Você não tem permissão de acesso a essa módulo. 
+              <GrRevert className="ml-4 icon-revert" onClick={() => history.push('Dashboard')}/>
+              </h1>}
         </Fragment>
     );
 }

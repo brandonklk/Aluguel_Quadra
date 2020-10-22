@@ -47,6 +47,7 @@ router.put('/reset_password_user', celebrate({
 
 router.put('/update_user', celebrate({
     [Segments.BODY]: Joi.object().keys({
+        id: Joi.number().required(),
         name: Joi.string().required(),
         email: Joi.string().required().email().trim(),
         password: Joi.string().required().min(6).max(12),

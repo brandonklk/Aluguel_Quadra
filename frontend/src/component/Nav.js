@@ -24,6 +24,10 @@ export default function Nav (props) {
     const editionUser = () => {
         history.push("/UserEdition");
     }
+
+    const createCourts = () => {
+        history.push("/TennisCourts");
+    }
     
     const style = {
         navStyle: {
@@ -70,9 +74,9 @@ export default function Nav (props) {
                 }                
                 
                 <NavDropdown title={user.name} style={style.nameUser} id="collasible-nav-dropdown">
-                    <NavDropdown.Item onClick={()=>{editionUser}}>Editar perfil <GrUserSettings/></NavDropdown.Item>
-                    {user.permission == 1 && <NavDropdown.Item>
-                            <Link to="/TennisCourts">Registrar Quadra <GrEdit/></Link>
+                    <NavDropdown.Item onClick={()=>{editionUser()}}>Editar perfil <GrUserSettings/></NavDropdown.Item>
+                    {user.permission == 1 && <NavDropdown.Item onClick={()=>{createCourts()}}>
+                            Registrar Quadra <GrEdit/>
                         </NavDropdown.Item>}
                     <NavDropdown.Item onClick={logoutUser}>Sair <GrLogout/></NavDropdown.Item>
                 </NavDropdown>

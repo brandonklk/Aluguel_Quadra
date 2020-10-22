@@ -154,19 +154,19 @@ module.exports = {
   },
 
   async updateDataUser(req, res){
-    const { name, email, password, phone, image_base_64 = '' } = req.body;
+    const { id, name, email, password, phone, image_base_64 = '' } = req.body;
 
     try {
         const passwordHash = await encryptedPwd(password);
   
-        const dataOfUser = await connection('users').where({ email })
+        const dataOfUser = await connection('users').where({ id })
           .update({
             name,
             email,
             passwordHash,
             phone,
             image_base_64
-          }).returning('*');
+          });
         
         return res.status(200).send({ message: 'Usuário atualizado com sucesso.', dataOfUser });
     } catch (err) {
