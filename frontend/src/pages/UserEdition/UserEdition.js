@@ -68,13 +68,13 @@ export default function UserEdition() {
 
   return (
     <Fragment>
+      <Loader loading={loading} />
       <form
         onSubmit={formik.handleSubmit} 
         className={!formik.isValid ? 'not-valid' : ''}
         autoComplete="off"
       >
-        <Container>
-          <Loader loading={loading} />
+        <Container className="mt-5">
           <p className="title">Edição de Usuário</p>
           <Row>
             <Col md="6">
