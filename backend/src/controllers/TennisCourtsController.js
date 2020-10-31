@@ -65,7 +65,7 @@ module.exports = {
         }
   
         logger.info("Tennis court successfully changed");
-        return res.status(200).send({ mensagem: 'Tennis court successfully changed' });
+        return res.status(200).send({ mensagem: 'Quadra atualizada com sucesso.' });
     },
 
     async deletePerId(req, res){
