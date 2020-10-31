@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import { useHistory } from "react-router-dom"
 import { GrRevert } from "react-icons/gr";
-import { Container, Row, Col, Button, Modal } from 'react-bootstrap'
+import { Container, Row, Col, Button, Modal, Alert } from 'react-bootstrap'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 
@@ -20,6 +20,7 @@ export default function TennisCourts () {
     const [list, setList] = useState([]);
     const [item, setItem] = useState({});
     const [user, setUser] = useState({name:''});
+    const [errorAlert, setErrorAlert] = useState(false);
     const history = useHistory()
 
     const [showModalEdit, setShowModalEdit ] = useState(false)
@@ -33,12 +34,25 @@ export default function TennisCourts () {
         horario_final: Yup.string().required('Selecione o horário final'),
     })
 
+    const validationSchemaModal = Yup.object({
+        nameModal: Yup.string().required('O nome é obrigatório'),
+        valueModal: Yup.number().required('O valor é obrigatório'),
+        horario_inicio_modal: Yup.string().required('Selecione o horário inicial'),
+        horario_final_modal: Yup.string().required('Selecione o horário final'),
+    })
+
     useEffect(() => {
         ActionsUserRegistration.getUserById(parseInt(getIdOfUser()))
         .then((r) => {
             setUser(r)
         })
     }, []);
+
+    useEffect(()=>{
+        setTimeout(() => {
+            setErrorAlert(false);
+        }, 10000);
+    }, [errorAlert]);
 
     const create = (values, { resetForm }) => {
         setLoading(true)
@@ -62,7 +76,6 @@ export default function TennisCourts () {
         onSubmit: create,
         validationSchema});
 
-    
     useEffect(() => {
         getList()
     }, []);
@@ -99,16 +112,38 @@ export default function TennisCourts () {
             .catch((error) => {console.log(error)})
     }
 
-    const edit = () => {
+    const edit = (values) => {
+        const { nameModal: name, valueModal: value,
+            horario_inicio_modal: horario_inicio, 
+            horario_final_modal: horario_final } = values 
+        const { id: owner_id } = user;
+        const { id } = item;
+
         setLoading(true)
-        Actions.edit(item)
+        Actions.edit({ id, name, value, owner_id, horario_inicio, horario_final })
             .then((r)=>{
                 setLoading(false)
                 handleModalEditClose()                
                 getList()
             })
-            .catch((r)=>{console.log(r)})
+            .catch((err)=>{
+                console.error(err); 
+                setLoading(false);
+                setErrorAlert(true);
+            })
     }
+    
+    const formikModal = useFormik({
+        initialValues: {
+            nameModal: item.name,
+            valueModal: item.value,
+            horario_inicio_modal: item.horario_inicio,
+            horario_final_modal: item.horario_final
+        },
+        onSubmit: edit,
+        validationSchema: validationSchemaModal,
+        enableReinitialize: true
+    });
 
     const renderOptionsHorario = (id) => {
         const horario_inicio = "07:00"
@@ -135,50 +170,74 @@ export default function TennisCourts () {
             <Loader loading={loading} />
             
             <Modal show={showModalEdit} onHide={handleModalEditClose}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Editar</Modal.Title>
-                    </Modal.Header>
+                <Modal.Header closeButton>
+                    <Modal.Title>Editar</Modal.Title>
+                </Modal.Header>
                 
+                <Alert variant="danger" show={errorAlert}>Ocorreu um erro ao salvar os dados da quadra.</Alert>
+                <form 
+                    onSubmit={formikModal.handleSubmit}
+                    className={!formikModal.isValid ? 'not-valid' : ''}
+                    autoComplete="off"
+                >
                     <Modal.Body>
-                        <form>
-                            <input placeholder="Nome"
-                                type="text"
-                                name="name"
-                                value={item.name}
-                                onChange={(e) => {setItem({...item, name: e.target.value})}}/>
+                        <input placeholder="Nome"
+                            type="text"
+                            name="nameModal"
+                            value={formikModal.values.nameModal}
+                            onBlur={formikModal.handleBlur}
+                            onChange={formikModal.handleChange}
+                        />
+                        {formikModal.touched.nameModal && formikModal.errors.nameModal
+                            ? <div className="feed-back-error-input">{formikModal.errors.nameModal}</div>
+                            :''
+                        }
+                        <input
+                            type="number"
+                            placeholder="Valor"
+                            name="valueModal"
+                            value={formikModal.values.valueModal}
+                            onBlur={formikModal.handleBlur}
+                            onChange={formikModal.handleChange}
+                        />
+                        {formikModal.touched.valueModal && formikModal.errors.valueModal 
+                            ? <div className="feed-back-error-input">{formikModal.errors.valueModal}</div>
+                            :''
+                        }
+                        <label>Horário inicial</label>
+                        <select id="horario_inicio_modal" 
+                            name="horario_inicio_modal"
+                            value={formikModal.values.horario_inicio_modal}
+                            onBlur={formikModal.handleBlur}
+                            onChange={formikModal.handleChange}
+                        >
+                        {renderOptionsHorario('horario_inicio_modal')}
+                        </select>
+                        {formikModal.touched.horario_inicio_modal && formikModal.errors.horario_inicio_modal 
+                            ? <div className="feed-back-error-input">{formikModal.errors.horario_inicio_modal}</div>
+                            :''
+                        }
 
-                            <input
-                                type="number"
-                                placeholder="Valor"
-                                name="value"
-                                value={item.value}
-                                onChange={(e) => {setItem({...item, value: e.target.value})}}
-                            />
-
-                            <label>Horário inicial</label>
-                            <select id="horario_inicio" 
-                                    name="horario_inicio"
-                                    value={item.horario_inicio}
-                                    onChange={(e) => {setItem({...item, horario_inicio: e.target.value})}}
-                                    >
-                                {renderOptionsHorario('horario_inicio_modal')}
-                            </select>
-
-                            <label>Horário final</label>
-                            <select id="horario_final" 
-                                    name="horario_final" 
-                                    value={item.horario_final}
-                                    onChange={(e) => {setItem({...item, horario_final: e.target.value})}}
-                                    >
-                                {renderOptionsHorario('horario_final_modal')}
-                            </select>
-                        </form>
+                        <label>Horário final</label>
+                        <select id="horario_final_modal" 
+                            name="horario_final_modal" 
+                            value={formikModal.values.horario_final_modal}
+                            onBlur={formikModal.handleBlur}
+                            onChange={formikModal.handleChange}
+                        >
+                        {renderOptionsHorario('horario_final_modal')}
+                        </select>
+                        {formikModal.touched.horario_final_modal && formikModal.errors.horario_final_modal 
+                            ? <div className="feed-back-error-input">{formikModal.errors.horario_final_modal}</div>
+                            :''
+                        }
                     </Modal.Body>
-                
+                    
                     <Modal.Footer>
-                        <Button variant="success" onClick={edit}>Salvar</Button>
+                        <Button variant="success" type="submit">Salvar</Button>
                         <Button variant="link" onClick={()=>{handleModalEditClose()}}>Fechar</Button>
                     </Modal.Footer>
+                </form>
             </Modal>
             {user.permission === 1 ?
             <Container className="mt-5">

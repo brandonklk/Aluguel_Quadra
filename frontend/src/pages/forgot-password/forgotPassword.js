@@ -82,9 +82,9 @@ const ForgotPassword = () => {
 
   return (
     <Fragment>
+      <Loader loading={loading}/>
       <form onSubmit={formik.handleSubmit} className={!formik.isValid ? 'not-valid' : ''} autocomplete="off">
         <Container>
-            <Loader loading={loading}/>
             <p className="title">
               {tokenIsValid ? 'Nova senha' : 'Esqueceu senha ?'}
             </p>
