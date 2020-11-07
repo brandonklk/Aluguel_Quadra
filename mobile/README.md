@@ -14,6 +14,9 @@
   - Yup
   - I18n
 
+## Instalar o expo no sua máquina
+- `npm install --global expo-cli`
+
 ## Como rodar
 
 - Realizar o downlod do Node
@@ -26,6 +29,7 @@
 ## Configuração do arquivo `Api.js`
 
 - O arquivo `api.js` é o arquivo responsavel por realizar as requisições do aplicativo para o back-end portanto o mesmo deve ser configurado da seguinte forma.
+- Criar um arquivo na pasta raiz do projeto no mobile chamado `.env` e criar uma propriedade chamada `IP_RUN_BACKEND`, ficando da seguinte forma `IP_RUN_BACKEND=Meu numero de IPv4`.
 
 ```javascript
 const api = axios.create({

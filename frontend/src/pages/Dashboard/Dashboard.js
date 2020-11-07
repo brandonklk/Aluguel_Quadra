@@ -1,4 +1,5 @@
 import React, {useState, useEffect, Fragment} from 'react'
+import InfiniteScroll from 'react-infinite-scroll-component';
 import { Col, Container, Row, Modal, Button, Dropdown } from 'react-bootstrap'
 import { formatDate } from '../../helper'
 import { GrClock } from "react-icons/gr";
@@ -34,6 +35,8 @@ export default function Dashboard (props) {
     let [arrayScheduling, setScheduling] = useState([]);
     let [arrayCopyScheduling, setCopyScheduling] = useState([]);
 
+    const [scrollInfinity, setScrollInfinity] = useState(1);
+
     const onChange = date => {
         setDate(date)
 
@@ -62,6 +65,17 @@ export default function Dashboard (props) {
                 // window.reload
             })
     }, []);
+
+    useEffect(() => {
+        setLoading(true);
+        ActionsSchedules.getAll({ page: scrollInfinity }).then((r) => {
+            setScheduling([...arrayScheduling, ...r.schedules]);
+            setLoading(false);           
+        }).catch((error) => {
+            setLoading(false);
+            console.error(error);
+        });
+    }, [scrollInfinity]);
 
     const saveOnScheduling = () => {
         setLoading(true)
@@ -118,6 +132,7 @@ export default function Dashboard (props) {
     const applyFilterInAllScheduling = () => {
         setLoading(true)
         ActionsSchedules.getAll().then((r) => {
+            setScrollInfinity(1);
             setScheduling(r.schedules)
             setLoading(false)
         })
@@ -126,6 +141,7 @@ export default function Dashboard (props) {
     const applyFilterInCurrentDate = () => {
         setLoading(true)
         ActionsSchedules.getAll({ date: formatDate(date) }).then((r) => {
+            setScrollInfinity(1);
             setScheduling(r.schedules)
             setLoading(false)
         })
@@ -165,7 +181,14 @@ export default function Dashboard (props) {
                             </Dropdown.Menu>
                         </Dropdown>
 
-                        <CardAgendamento arr={arrayScheduling} onClick={onClickAgendamento} removerScheduling={removerScheduling}/>
+                        <InfiniteScroll
+                            dataLength={arrayScheduling.length}
+                            next={() => setScrollInfinity(scrollInfinity + 1)}
+                            hasMore={true}
+                            loader={loading && <h4 style={{ textAlign: 'center' }}>Loading...</h4>}
+                        >
+                            <CardAgendamento arr={arrayScheduling} onClick={onClickAgendamento} removerScheduling={removerScheduling}/>
+                        </InfiniteScroll>
                     </Col>
 
                     <Col md="6">

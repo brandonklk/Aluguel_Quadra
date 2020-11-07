@@ -4,11 +4,15 @@ const logger = require('../logger/logger');
 module.exports = {
 
     async getAll(req, res){
-        const { user_id, date, date_begin } =  req.query
+        const { user_id, date, date_begin, page = 1 } =  req.query
+
+        const [count] = await connection('schedules').count();
         
         const tennisCourts = await connection('schedules')
+            .limit(5).offset((page - 1) * 5)
             .select('schedules.id', 'schedules.date', 'schedules.time',
-                    'tennis_courts.name','tennis_courts.value').leftJoin('tennis_courts', 'schedules.tennis_court_id', 'tennis_courts.id')
+                    'tennis_courts.name','tennis_courts.value')
+                    .leftJoin('tennis_courts', 'schedules.tennis_court_id', 'tennis_courts.id')
             .where((qb) => {
 
                 if (user_id)
@@ -23,6 +27,7 @@ module.exports = {
             .orderBy('date', 'ASC')
             .orderBy('time', 'ASC')
 
+            res.header('X-Total-Count', count['count(*)']);
 
         return res.json(tennisCourts);
     },

@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from "react"
-import { Card, Col, Container, Row, Modal, Button, Dropdown } from 'react-bootstrap'
+import { Card, Modal, Button } from 'react-bootstrap'
 import { GrTrash } from "react-icons/gr";
 import { formatCurrency } from '../helper'
 
@@ -28,7 +28,7 @@ const RenderHorarios = (props) => {
         h.horario_fim = horario_fim
         h.value = formatCurrency(h.value)
     });
-    
+
     return (
         <Fragment>
             <Card.Subtitle className="mb-2 text-muted">Horário{agendamento.horarios.length > 1 ? 's' :''}:</Card.Subtitle>
