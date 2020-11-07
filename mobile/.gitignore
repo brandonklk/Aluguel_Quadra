@@ -126,5 +126,7 @@ docs/pages/versions/*/react-native/ADDED_*.md
 docs/pages/versions/*/react-native/REMOVED_*.md
 docs/pages/versions/*/react-native/*.diff
 
+.env
+
 # Home
 /home/dist
