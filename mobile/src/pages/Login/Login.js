@@ -1,5 +1,7 @@
 import React, { useRef } from 'react';
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { KeyboardAvoidingView, View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+//import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
@@ -13,6 +15,7 @@ import i18n from '../../translation/translationMessage.json';
 export default function Login() {
     const email = useRef(null);
     const password = useRef(null);
+    const navigation = useNavigation();
 
     const validationShema = Yup.object().shape({
         email: Yup.string().email(i18n.mailInvalid).required(i18n.fieldRequired),
@@ -24,6 +27,14 @@ export default function Login() {
         password: ''
     });
 
+    const navigateToUserRegistration = () => {
+        navigation.navigate('UserRegistration');
+    }
+
+    const navigateToForgotPassword = () => {
+        navigation.navigate('ForgotPassword');
+    }
+
     return (
         <Formik initialValues={{ formikInitialValues }} 
             onSubmit={ values => { values } }
@@ -31,24 +42,43 @@ export default function Login() {
         >
 
             {({ values, handleChange, handleSubmit, errors }) => (
+                <KeyboardAvoidingView style={globalCSS.keyboardAvoidingView}>
+                    <View style={loginCSS.img}>
+                        {/* <MaterialCommunityIcons name="tennis" size={200} color="black" />*/}
+                    </View>
 
-                <View style={globalCSS.container}>
+                    <View style={globalCSS.container}>
 
-                    <Text>Login</Text>
+                        <TextInput placeholder={i18n.mail} style={globalCSS.inputDefault} 
+                            ref={email} value={values.email} onChangeText={handleChange('email')}
+                        ></TextInput>
 
-                    <TextInput style={{ height: 40, borderColor: 'gray', borderWidth: 1 }} 
-                        ref={email} value={values.email} onChangeText={handleChange('email')} >
-                    </TextInput>
+                        { errors.email && <Text style={globalCSS.msgError}>{ errors.email }</Text> }
 
-                    { errors.email && <Text>{ errors.email }</Text> }
+                        <TextInput placeholder={i18n.password} style={globalCSS.inputDefault} 
+                            ref={password} value={values.password} onChangeText={handleChange('password')}
+                        ></TextInput>
 
-                    <TouchableOpacity onPress={ handleSubmit }>
-                        <Text>{i18n.nameButtonDefault}</Text>
-                    </TouchableOpacity>
+                        { errors.password && <Text style={globalCSS.msgError}>{ errors.password }</Text> }
 
-                    <Text>{values.email}</Text>
+                        <TouchableOpacity style={globalCSS.buttonDefault} onPress={ handleSubmit }>
+                            <Text style={globalCSS.textButton}>{i18n.nameButtonDefault}</Text>
+                        </TouchableOpacity>
 
-                </View>
+                        <View style={loginCSS.containerActions}>
+                            <TouchableOpacity style={loginCSS.action} onPress={ navigateToUserRegistration }>
+                                <Text style={loginCSS.textLink}>{i18n.createAccount}</Text>
+                            </TouchableOpacity>
+
+                            <Text style={loginCSS.action}> | </Text>
+
+                            <TouchableOpacity style={loginCSS.action} onPress={ navigateToForgotPassword }>
+                                <Text style={loginCSS.textLink}>{i18n.forgotPassword}</Text>
+                            </TouchableOpacity>
+                        </View>
+
+                    </View>
+                </KeyboardAvoidingView>
             )}
 
         </Formik>
